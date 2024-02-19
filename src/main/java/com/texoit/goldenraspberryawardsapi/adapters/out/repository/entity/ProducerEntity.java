@@ -14,7 +14,7 @@ public class ProducerEntity {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "producers")
+    @ManyToMany(mappedBy = "producers", fetch = FetchType.EAGER)
     private final Set<MovieEntity> movies;
 
     public ProducerEntity() {
