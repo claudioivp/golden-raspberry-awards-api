@@ -11,6 +11,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @RestControllerAdvice
@@ -18,6 +19,11 @@ public class ErrorHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<EntityNotFoundException> handleNotFoundError() {
+        return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<NoSuchElementException> handleNoSuchElementError() {
         return ResponseEntity.notFound().build();
     }
 

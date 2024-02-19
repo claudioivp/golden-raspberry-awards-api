@@ -3,8 +3,7 @@ package com.texoit.goldenraspberryawardsapi.adapters.in.controller;
 import com.texoit.goldenraspberryawardsapi.adapters.in.controller.mapper.StudioMapper;
 import com.texoit.goldenraspberryawardsapi.adapters.in.controller.request.StudioRequest;
 import com.texoit.goldenraspberryawardsapi.adapters.in.controller.response.StudioResponse;
-import com.texoit.goldenraspberryawardsapi.adapters.out.repository.StudioRepository;
-import com.texoit.goldenraspberryawardsapi.adapters.out.repository.mapper.MovieStudioEntityMapper;
+import com.texoit.goldenraspberryawardsapi.application.ports.in.FindStudioByIdInputPort;
 import com.texoit.goldenraspberryawardsapi.application.ports.in.InsertStudioInputPort;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +17,13 @@ import java.util.UUID;
 public class StudioController {
 
     private final InsertStudioInputPort insertStudioInputPort;
+    private final FindStudioByIdInputPort findStudioByIdInputPort;
     private final StudioMapper studioMapper;
-    private final MovieStudioEntityMapper studioEntityMapper;
-    private final StudioRepository studioRepository;
 
-    public StudioController(InsertStudioInputPort insertStudioInputPort, StudioMapper studioMapper, MovieStudioEntityMapper studioEntityMapper, StudioRepository studioRepository) {
+    public StudioController(InsertStudioInputPort insertStudioInputPort, FindStudioByIdInputPort findStudioByIdInputPort, StudioMapper studioMapper) {
         this.insertStudioInputPort = insertStudioInputPort;
+        this.findStudioByIdInputPort = findStudioByIdInputPort;
         this.studioMapper = studioMapper;
-        this.studioEntityMapper = studioEntityMapper;
-        this.studioRepository = studioRepository;
     }
 
     @PostMapping
@@ -39,7 +36,7 @@ public class StudioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<StudioResponse> retrieve(@PathVariable UUID id) {
-        var studioResponse = studioMapper.toStudioResponse(studioEntityMapper.toStudio(studioRepository.getReferenceById(id)));
+        var studioResponse = studioMapper.toStudioResponse(findStudioByIdInputPort.find(id));
         return ResponseEntity.ok(studioResponse);
     }
 }

@@ -5,10 +5,10 @@ import com.texoit.goldenraspberryawardsapi.adapters.in.controller.request.MovieR
 import com.texoit.goldenraspberryawardsapi.adapters.in.controller.response.MovieResponse;
 import com.texoit.goldenraspberryawardsapi.adapters.out.repository.MovieRepository;
 import com.texoit.goldenraspberryawardsapi.adapters.out.repository.mapper.MovieEntityMapper;
+import com.texoit.goldenraspberryawardsapi.application.ports.in.FindMovieByIdInputPort;
 import com.texoit.goldenraspberryawardsapi.application.ports.in.InsertMovieInputPort;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,15 +19,13 @@ import java.util.UUID;
 public class MovieController {
 
     private final InsertMovieInputPort insertMovieInputPort;
+    private final FindMovieByIdInputPort findMovieByIdInputPort;
     private final MovieMapper movieMapper;
-    private final MovieRepository movieRepository;
-    private final MovieEntityMapper movieEntityMapper;
 
-    public MovieController(InsertMovieInputPort insertMovieInputPort, MovieMapper movieMapper, MovieRepository movieRepository, MovieEntityMapper movieEntityMapper) {
+    public MovieController(InsertMovieInputPort insertMovieInputPort, MovieMapper movieMapper, FindMovieByIdInputPort findMovieByIdInputPort) {
         this.insertMovieInputPort = insertMovieInputPort;
         this.movieMapper = movieMapper;
-        this.movieRepository = movieRepository;
-        this.movieEntityMapper = movieEntityMapper;
+        this.findMovieByIdInputPort = findMovieByIdInputPort;
     }
 
     @PostMapping
@@ -40,7 +38,7 @@ public class MovieController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MovieResponse> retrieve(@PathVariable UUID id) {
-        var movieResponse = movieMapper.toMovieResponse(movieEntityMapper.toMovie(movieRepository.getReferenceById(id)));
+        var movieResponse = movieMapper.toMovieResponse(findMovieByIdInputPort.find(id));
         return ResponseEntity.ok(movieResponse);
     }
 
