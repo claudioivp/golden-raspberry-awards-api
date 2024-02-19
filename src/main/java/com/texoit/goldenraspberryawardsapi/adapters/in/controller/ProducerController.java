@@ -3,8 +3,7 @@ package com.texoit.goldenraspberryawardsapi.adapters.in.controller;
 import com.texoit.goldenraspberryawardsapi.adapters.in.controller.mapper.ProducerMapper;
 import com.texoit.goldenraspberryawardsapi.adapters.in.controller.request.ProducerRequest;
 import com.texoit.goldenraspberryawardsapi.adapters.in.controller.response.ProducerResponse;
-import com.texoit.goldenraspberryawardsapi.adapters.out.repository.ProducerRepository;
-import com.texoit.goldenraspberryawardsapi.adapters.out.repository.mapper.ProducerEntityMapper;
+import com.texoit.goldenraspberryawardsapi.application.ports.in.FindProducerByIdInputPort;
 import com.texoit.goldenraspberryawardsapi.application.ports.in.InsertProducerInputPort;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +17,13 @@ import java.util.UUID;
 public class ProducerController {
 
     private final InsertProducerInputPort insertProducerInputPort;
+    private final FindProducerByIdInputPort findProducerByIdInputPort;
     private final ProducerMapper producerMapper;
-    private final ProducerRepository producerRepository;
-    private final ProducerEntityMapper producerEntityMapper;
 
-    public ProducerController(InsertProducerInputPort insertProducerInputPort, ProducerMapper producerMapper, ProducerRepository producerRepository, ProducerEntityMapper producerEntityMapper) {
+    public ProducerController(InsertProducerInputPort insertProducerInputPort, FindProducerByIdInputPort findProducerByIdInputPort, ProducerMapper producerMapper) {
         this.insertProducerInputPort = insertProducerInputPort;
+        this.findProducerByIdInputPort = findProducerByIdInputPort;
         this.producerMapper = producerMapper;
-        this.producerRepository = producerRepository;
-        this.producerEntityMapper = producerEntityMapper;
     }
 
     @PostMapping
@@ -39,7 +36,7 @@ public class ProducerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProducerResponse> retrieve(@PathVariable UUID id) {
-        var producerResponse = producerMapper.toProducerResponse(producerEntityMapper.toProducer(producerRepository.getReferenceById(id)));
+        var producerResponse = producerMapper.toProducerResponse(findProducerByIdInputPort.find(id));
         return ResponseEntity.ok(producerResponse);
     }
 
