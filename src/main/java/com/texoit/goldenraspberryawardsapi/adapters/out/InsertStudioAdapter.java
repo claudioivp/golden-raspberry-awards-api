@@ -21,7 +21,7 @@ public class InsertStudioAdapter implements InsertStudioOutputPort {
 
     @Override
     public Studio insert(Studio studio) {
-        StudioEntity studioEntity = studioRepository.save(studioEntityMapper.toStudioEntity(studio));
+        var studioEntity = studioRepository.save(studioEntityMapper.toStudioEntity(studio));
         return studioEntityMapper.toStudio(studioEntity);
     }
 
