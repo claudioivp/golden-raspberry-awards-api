@@ -10,22 +10,10 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring", uses = {StudioEntityMapper.class, ProducerEntityMapper.class})
+@Mapper(componentModel = "spring", uses = {MovieStudioEntityMapper.class, MovieProducerEntityMapper.class})
 public interface MovieEntityMapper {
 
-    @Mapping(target = "producers", ignore = true)
     MovieEntity toMovieEntity(Movie movie);
-
-    ProducerEntityMapper producerEntityMapper = Mappers.getMapper(ProducerEntityMapper.class);
-
-    @AfterMapping
-    default void mapProducers(Movie movie, @MappingTarget MovieEntity movieEntity) {
-        movieEntity.setProducers(
-                movie.getProducers().stream()
-                        .map(producerEntityMapper::toProducerEntity)
-                        .collect(Collectors.toSet())
-        );
-    }
-
     Movie toMovie(MovieEntity movieEntity);
+
 }

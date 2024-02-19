@@ -17,7 +17,7 @@ public class MovieEntity {
     private Integer year;
     private String title;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "movie_producer",
             joinColumns = @JoinColumn(name = "movie_id"),
@@ -25,7 +25,7 @@ public class MovieEntity {
     )
     private Set<ProducerEntity> producers;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "movie_studio",
             joinColumns = @JoinColumn(name = "movie_id"),

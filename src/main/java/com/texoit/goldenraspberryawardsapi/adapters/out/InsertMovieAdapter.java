@@ -21,7 +21,7 @@ public class InsertMovieAdapter implements InsertMovieOutputPort {
 
     @Override
     public Movie insert(Movie movie) {
-        MovieEntity movieEntity = movieRepository.save(movieEntityMapper.toMovieEntity(movie));
+        var movieEntity = movieRepository.save(movieEntityMapper.toMovieEntity(movie));
         return movieEntityMapper.toMovie(movieEntity);
     }
 
