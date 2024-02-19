@@ -21,7 +21,7 @@ public class InsertProducerAdapter implements InsertProducerOutputPort {
 
     @Override
     public Producer insert(Producer producer) {
-        ProducerEntity producerEntity = producerRepository.save(producerEntityMapper.toProducerEntity(producer));
+        var producerEntity = producerRepository.save(producerEntityMapper.toProducerEntity(producer));
         return producerEntityMapper.toProducer(producerEntity);
     }
 

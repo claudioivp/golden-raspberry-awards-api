@@ -5,7 +5,7 @@ import com.texoit.goldenraspberryawardsapi.adapters.out.repository.entity.Produc
 import com.texoit.goldenraspberryawardsapi.application.core.domain.Producer;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ProducerMovieEntityMapper.class})
 public interface ProducerEntityMapper {
 
     ProducerEntity toProducerEntity(Producer producer);
