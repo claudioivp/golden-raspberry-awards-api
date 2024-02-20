@@ -1,7 +1,6 @@
 package com.texoit.goldenraspberryawardsapi.adapters.out;
 
 import com.texoit.goldenraspberryawardsapi.adapters.out.repository.ProducerRepository;
-import com.texoit.goldenraspberryawardsapi.adapters.out.repository.entity.ProducerEntity;
 import com.texoit.goldenraspberryawardsapi.adapters.out.repository.mapper.ProducerEntityMapper;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.Producer;
 import com.texoit.goldenraspberryawardsapi.application.ports.out.InsertProducerOutputPort;

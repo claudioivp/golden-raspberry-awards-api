@@ -3,8 +3,6 @@ package com.texoit.goldenraspberryawardsapi.adapters.in.controller;
 import com.texoit.goldenraspberryawardsapi.adapters.in.controller.mapper.MovieMapper;
 import com.texoit.goldenraspberryawardsapi.adapters.in.controller.request.MovieRequest;
 import com.texoit.goldenraspberryawardsapi.adapters.in.controller.response.MovieResponse;
-import com.texoit.goldenraspberryawardsapi.adapters.out.repository.MovieRepository;
-import com.texoit.goldenraspberryawardsapi.adapters.out.repository.mapper.MovieEntityMapper;
 import com.texoit.goldenraspberryawardsapi.application.ports.in.FindMovieByIdInputPort;
 import com.texoit.goldenraspberryawardsapi.application.ports.in.InsertMovieInputPort;
 import jakarta.validation.Valid;

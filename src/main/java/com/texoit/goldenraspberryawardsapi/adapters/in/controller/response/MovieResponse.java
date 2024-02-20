@@ -1,9 +1,5 @@
 package com.texoit.goldenraspberryawardsapi.adapters.in.controller.response;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 

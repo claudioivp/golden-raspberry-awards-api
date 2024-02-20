@@ -6,7 +6,6 @@ import com.texoit.goldenraspberryawardsapi.application.core.domain.Studio;
 import com.texoit.goldenraspberryawardsapi.application.ports.out.FindStudioByIdOutputPort;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Component
