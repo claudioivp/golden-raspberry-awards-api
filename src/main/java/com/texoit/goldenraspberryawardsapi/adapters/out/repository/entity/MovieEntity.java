@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity(name = "movie")
+@Entity(name = "Movie")
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "year", "title" }) })
 public class MovieEntity {
 

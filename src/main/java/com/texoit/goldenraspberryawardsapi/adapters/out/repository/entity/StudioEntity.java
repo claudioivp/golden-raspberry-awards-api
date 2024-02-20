@@ -8,7 +8,7 @@ import org.hibernate.annotations.UuidGenerator;
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity(name = "studio")
+@Entity(name = "Studio")
 public class StudioEntity {
 
     @Id

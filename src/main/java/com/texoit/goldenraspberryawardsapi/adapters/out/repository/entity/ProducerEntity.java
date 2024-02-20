@@ -5,7 +5,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.util.*;
 
-@Entity(name = "producer")
+@Entity(name = "Producer")
 public class ProducerEntity {
 
     @Id
