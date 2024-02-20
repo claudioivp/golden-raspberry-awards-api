@@ -79,7 +79,6 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
                 line[3].split(", | and "),
                 line[4].equalsIgnoreCase("yes")
             );
-            System.out.println(line[4]);
         }
     }
 }
