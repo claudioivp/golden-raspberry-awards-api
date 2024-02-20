@@ -1,7 +1,5 @@
 package com.texoit.goldenraspberryawardsapi.application.core.domain;
 
-import com.texoit.goldenraspberryawardsapi.adapters.out.repository.response.ProducerIntervalsProjection;
-
 public class AwardInterval {
 
     private String producer;

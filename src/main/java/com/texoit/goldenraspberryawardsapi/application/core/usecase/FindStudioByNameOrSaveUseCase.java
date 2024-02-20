@@ -5,8 +5,6 @@ import com.texoit.goldenraspberryawardsapi.application.ports.in.FindStudioByName
 import com.texoit.goldenraspberryawardsapi.application.ports.in.InsertStudioInputPort;
 import com.texoit.goldenraspberryawardsapi.application.ports.out.FindStudioByNameOutputPort;
 
-import java.util.Optional;
-
 public class FindStudioByNameOrSaveUseCase implements FindStudioByNameOrSaveInputPort {
 
     private final FindStudioByNameOutputPort findStudioByNameOutputPort;

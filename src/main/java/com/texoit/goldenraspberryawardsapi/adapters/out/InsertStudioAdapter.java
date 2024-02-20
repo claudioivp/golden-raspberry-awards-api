@@ -1,7 +1,6 @@
 package com.texoit.goldenraspberryawardsapi.adapters.out;
 
 import com.texoit.goldenraspberryawardsapi.adapters.out.repository.StudioRepository;
-import com.texoit.goldenraspberryawardsapi.adapters.out.repository.entity.StudioEntity;
 import com.texoit.goldenraspberryawardsapi.adapters.out.repository.mapper.StudioEntityMapper;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.Studio;
 import com.texoit.goldenraspberryawardsapi.application.ports.out.InsertStudioOutputPort;

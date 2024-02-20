@@ -3,7 +3,10 @@ package com.texoit.goldenraspberryawardsapi.adapters.out.repository.mapper;
 import com.texoit.goldenraspberryawardsapi.adapters.out.repository.ProducerRepository;
 import com.texoit.goldenraspberryawardsapi.adapters.out.repository.entity.ProducerEntity;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.Producer;
-import org.mapstruct.*;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring")

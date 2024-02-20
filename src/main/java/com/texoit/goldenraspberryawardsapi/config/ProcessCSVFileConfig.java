@@ -1,8 +1,7 @@
 package com.texoit.goldenraspberryawardsapi.config;
 
 import com.opencsv.exceptions.CsvException;
-import com.texoit.goldenraspberryawardsapi.adapters.out.repository.ProducerRepository;
-import com.texoit.goldenraspberryawardsapi.application.ports.in.*;
+import com.texoit.goldenraspberryawardsapi.application.ports.in.ProcessCSVFileInputPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
