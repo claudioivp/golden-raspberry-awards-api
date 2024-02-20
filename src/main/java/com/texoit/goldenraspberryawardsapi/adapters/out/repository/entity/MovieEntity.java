@@ -8,12 +8,13 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity(name = "Movie")
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "year", "title" }) })
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "productionYear", "title" }) })
 public class MovieEntity {
 
     @Id
     @UuidGenerator
     private UUID id;
+    @Column(name = "productionYear")
     private Integer year;
     private String title;
 
