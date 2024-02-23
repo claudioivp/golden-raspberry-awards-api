@@ -1,35 +1,24 @@
 package com.texoit.goldenraspberryawardsapi.config;
 
-import com.opencsv.exceptions.CsvException;
-import com.texoit.goldenraspberryawardsapi.application.ports.in.ProcessCSVFileInputPort;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
+import com.texoit.goldenraspberryawardsapi.adapters.in.filereader.OpenCSVFileReader;
+import com.texoit.goldenraspberryawardsapi.application.core.usecase.ProcessCSVFileUseCase;
+import com.texoit.goldenraspberryawardsapi.application.ports.in.FindProducerByNameOrSaveInputPort;
+import com.texoit.goldenraspberryawardsapi.application.ports.in.FindStudioByNameOrSaveInputPort;
+import com.texoit.goldenraspberryawardsapi.application.ports.in.InsertMovieInputPort;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 @Configuration
-public class ProcessCSVFileConfig implements CommandLineRunner {
+public class ProcessCSVFileConfig {
 
-    private final ProcessCSVFileInputPort processCSVFileInputPort;
-
-    private static final Logger logger = LoggerFactory.getLogger(ProcessCSVFileConfig.class);
-
-    public ProcessCSVFileConfig(ProcessCSVFileInputPort processCSVFileInputPort) {
-        this.processCSVFileInputPort = processCSVFileInputPort;
-    }
-
-    @Override
-    public void run(String... args) throws URISyntaxException, IOException, CsvException {
-        Path filePath = Paths.get(
-            ClassLoader.getSystemResource("movielist.csv").toURI());
-        processCSVFileInputPort.start(filePath);
-
-        logger.info("Processamento do arquivo concluído com sucesso.");
+    @Bean
+    public ProcessCSVFileUseCase processCSVFileUseCase(
+            OpenCSVFileReader openCSVFileReader,
+            FindStudioByNameOrSaveInputPort findStudioByNameOrSaveInputPort,
+            FindProducerByNameOrSaveInputPort InsertProducerInputPort,
+            InsertMovieInputPort insertMovieInputPort
+    ) {
+        return new ProcessCSVFileUseCase(openCSVFileReader, findStudioByNameOrSaveInputPort, InsertProducerInputPort, insertMovieInputPort);
     }
 
 }

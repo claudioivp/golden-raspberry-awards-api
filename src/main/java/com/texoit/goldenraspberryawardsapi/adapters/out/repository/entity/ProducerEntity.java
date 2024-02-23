@@ -11,13 +11,19 @@ public class ProducerEntity {
     @Id
     @UuidGenerator
     private UUID id;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "producers", fetch = FetchType.EAGER)
     private final Set<MovieEntity> movies;
 
     public ProducerEntity() {
+        this.movies = new LinkedHashSet<>();
+    }
+
+    public ProducerEntity(UUID id, String name) {
+        this.id = id;
+        this.name = name;
         this.movies = new LinkedHashSet<>();
     }
 

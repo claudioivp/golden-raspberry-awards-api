@@ -3,6 +3,7 @@ package com.texoit.goldenraspberryawardsapi.adapters.out.repository.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -14,27 +15,43 @@ public class MovieEntity {
     @Id
     @UuidGenerator
     private UUID id;
-    @Column(name = "productionYear")
+    @Column(name = "productionYear", nullable = false)
     private Integer year;
+    @Column(nullable = false)
     private String title;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "movie_producer",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "producer_id")
-    )
-    private Set<ProducerEntity> producers;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
             name = "movie_studio",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "studio_id")
+            joinColumns = @JoinColumn(name = "movie_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "studio_id", nullable = false)
     )
     private Set<StudioEntity> studios;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "movie_producer",
+            joinColumns = @JoinColumn(name = "movie_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "producer_id", nullable = false)
+    )
+    private Set<ProducerEntity> producers;
+
     private Boolean winner;
+
+    public MovieEntity() {
+        this.studios = new LinkedHashSet<>();
+        this.producers = new LinkedHashSet<>();
+    }
+
+    public MovieEntity(UUID id, Integer year, String title, Set<StudioEntity> studios, Set<ProducerEntity> producers, Boolean winner) {
+        this.id = id;
+        this.year = year;
+        this.title = title;
+        this.studios = new LinkedHashSet<>(studios);
+        this.producers = new LinkedHashSet<>(producers);
+        this.studios = studios;
+        this.winner = winner;
+    }
 
     public UUID getId() {
         return id;
