@@ -14,10 +14,15 @@ public class StudioEntity {
     @Id
     @UuidGenerator
     private UUID id;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     public StudioEntity() {
+    }
+
+    public StudioEntity(UUID id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public UUID getId() {
