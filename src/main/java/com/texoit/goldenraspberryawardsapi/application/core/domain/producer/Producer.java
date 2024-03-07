@@ -28,6 +28,12 @@ public class Producer {
         this.movies = new LinkedHashSet<>();
     }
 
+    public Producer(UUID id, String name) {
+        this.id = id;
+        this.name = name;
+        this.movies = new LinkedHashSet<>();
+    }
+
     public UUID getId() {
         return id;
     }
