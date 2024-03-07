@@ -3,7 +3,7 @@ package com.texoit.goldenraspberryawardsapi.adapters.out.studio.repository.entit
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import org.hibernate.annotations.UuidGenerator;
+import jakarta.persistence.PrePersist;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -12,7 +12,6 @@ import java.util.UUID;
 public class StudioEntity {
 
     @Id
-    @UuidGenerator
     private UUID id;
     @Column(unique = true, nullable = false)
     private String name;
@@ -52,5 +51,12 @@ public class StudioEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (Objects.isNull(this.id)) {
+            this.id = UUID.randomUUID();
+        }
     }
 }

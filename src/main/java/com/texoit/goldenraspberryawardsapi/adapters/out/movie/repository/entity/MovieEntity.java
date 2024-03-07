@@ -3,7 +3,6 @@ package com.texoit.goldenraspberryawardsapi.adapters.out.movie.repository.entity
 import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.entity.ProducerEntity;
 import com.texoit.goldenraspberryawardsapi.adapters.out.studio.repository.entity.StudioEntity;
 import jakarta.persistence.*;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -15,7 +14,6 @@ import java.util.UUID;
 public class MovieEntity {
 
     @Id
-    @UuidGenerator
     private UUID id;
     @Column(name = "productionYear", nullable = false)
     private Integer year;
@@ -114,5 +112,12 @@ public class MovieEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, year, title, producers, studios, winner);
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (Objects.isNull(this.id)) {
+            this.id = UUID.randomUUID();
+        }
     }
 }
