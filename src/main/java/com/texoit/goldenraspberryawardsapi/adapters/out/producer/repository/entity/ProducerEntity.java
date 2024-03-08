@@ -2,7 +2,6 @@ package com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.ent
 
 import com.texoit.goldenraspberryawardsapi.adapters.out.movie.repository.entity.MovieEntity;
 import jakarta.persistence.*;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.util.*;
 
@@ -10,7 +9,6 @@ import java.util.*;
 public class ProducerEntity {
 
     @Id
-    @UuidGenerator
     private UUID id;
     @Column(unique = true, nullable = false)
     private String name;
@@ -64,5 +62,12 @@ public class ProducerEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (Objects.isNull(this.id)) {
+            this.id = UUID.randomUUID();
+        }
     }
 }

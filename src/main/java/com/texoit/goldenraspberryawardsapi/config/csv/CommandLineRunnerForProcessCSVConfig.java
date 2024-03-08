@@ -5,6 +5,7 @@ import com.texoit.goldenraspberryawardsapi.application.ports.in.csv.ProcessCSVFi
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
@@ -12,6 +13,11 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@ConditionalOnProperty(
+        prefix = "command.line.runner",
+        value = "enabled",
+        havingValue = "true",
+        matchIfMissing = true)
 @Configuration
 public class CommandLineRunnerForProcessCSVConfig implements CommandLineRunner {
 

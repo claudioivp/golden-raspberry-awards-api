@@ -1,6 +1,5 @@
 package com.texoit.goldenraspberryawardsapi.adapters.out.movie.repository;
 
-import com.texoit.goldenraspberryawardsapi.adapters.out.movie.repository.MovieRepository;
 import com.texoit.goldenraspberryawardsapi.adapters.out.movie.repository.entity.MovieEntity;
 import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.ProducerRepository;
 import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.entity.ProducerEntity;
@@ -15,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,6 +26,7 @@ public class MovieRepositoryTest {
     private final ProducerRepository producerRepository;
     private final MovieRepository movieRepository;
     private MovieEntity movieToSave;
+    private MovieEntity duplicatedMovieToSave;
     private StudioEntity associatedFilmDistribution;
     private StudioEntity universalStudios;
     private ProducerEntity stevenSpielberg;
@@ -66,21 +67,31 @@ public class MovieRepositoryTest {
                 "Matthew Vaughn"
         );
 
-        // Given Movie
+        // Given Movies
         movieToSave = new MovieEntity(
                 UUID.randomUUID(),
                 1990,
                 "Movie Test",
-                new LinkedHashSet<>(Arrays.asList(associatedFilmDistribution, universalStudios)),
-                new LinkedHashSet<>(Arrays.asList(stevenSpielberg, joelSilver, matthewVaughn)),
+                new LinkedHashSet<>(Set.of(associatedFilmDistribution, universalStudios)),
+                new LinkedHashSet<>(Set.of(stevenSpielberg, joelSilver, matthewVaughn)),
                 Boolean.TRUE
+        );
+        duplicatedMovieToSave = new MovieEntity(
+                UUID.randomUUID(),
+                1990,
+                "Movie Test",
+                new LinkedHashSet<>(Set.of(associatedFilmDistribution)),
+                new LinkedHashSet<>(Set.of(joelSilver)),
+                null
         );
     }
 
     @Test
-    @DisplayName("MovieRepository não deve ser nulo")
+    @DisplayName("MovieRepository, ProducerRepository, StudioRepository não devem ser nulo")
     public void repositoryLoads() {
         assertNotNull(movieRepository);
+        assertNotNull(producerRepository);
+        assertNotNull(studioRepository);
     }
 
     @Test
@@ -93,6 +104,7 @@ public class MovieRepositoryTest {
 
         // Then
         assertNotNull(savedMovie.getId());
+        assertEquals(movieToSave.getId(), savedMovie.getId());
         assertEquals(movieToSave.getYear(), savedMovie.getYear());
         assertEquals(movieToSave.getTitle(), savedMovie.getTitle());
         assertEquals(movieToSave.getStudios().size(), savedMovie.getStudios().size());
@@ -104,14 +116,14 @@ public class MovieRepositoryTest {
     @DisplayName("MovieRepository não deve salvar uma entidade com o campo 'year' nulo")
     public void testSaveMovieYearNull() {
         movieToSave.setYear(null);
+        studioRepository.saveAllAndFlush(Arrays.asList(associatedFilmDistribution, universalStudios));
+        producerRepository.saveAllAndFlush(Arrays.asList(stevenSpielberg, joelSilver, matthewVaughn));
 
         // Then
-        DataIntegrityViolationException dataIntegrityViolationException = assertThrows(
+        var dataIntegrityViolationException = assertThrows(
                 DataIntegrityViolationException.class,
                 () -> {
                     // When
-                    studioRepository.saveAllAndFlush(Arrays.asList(associatedFilmDistribution, universalStudios));
-                    producerRepository.saveAllAndFlush(Arrays.asList(stevenSpielberg, joelSilver, matthewVaughn));
                     movieRepository.saveAndFlush(movieToSave);
                 });
         assertTrue(dataIntegrityViolationException.getMessage().contains("NULL not allowed for column"));
@@ -123,7 +135,7 @@ public class MovieRepositoryTest {
         movieToSave.setTitle(null);
 
         // Then
-        DataIntegrityViolationException dataIntegrityViolationException = assertThrows(
+        var dataIntegrityViolationException = assertThrows(
                 DataIntegrityViolationException.class,
                 () -> {
                     // When
@@ -142,17 +154,13 @@ public class MovieRepositoryTest {
         producerRepository.saveAllAndFlush(Arrays.asList(stevenSpielberg, joelSilver, matthewVaughn));
         movieRepository.saveAndFlush(movieToSave);
 
-        var duplicateMovie = new MovieEntity(
-                UUID.randomUUID(),
-                1990,
-                "Movie Test",
-                new LinkedHashSet<>(Arrays.asList(associatedFilmDistribution)),
-                new LinkedHashSet<>(Arrays.asList(joelSilver)),
-                null
-        );
-
         // Then
-        DataIntegrityViolationException dataIntegrityViolationException = assertThrows(DataIntegrityViolationException.class, () -> movieRepository.saveAndFlush(duplicateMovie));
+        var dataIntegrityViolationException = assertThrows(
+                DataIntegrityViolationException.class,
+                () -> {
+                    // When
+                    movieRepository.saveAndFlush(duplicatedMovieToSave);
+                });
         assertTrue(dataIntegrityViolationException.getMessage().contains("Unique index or primary key violation"));
     }
 
