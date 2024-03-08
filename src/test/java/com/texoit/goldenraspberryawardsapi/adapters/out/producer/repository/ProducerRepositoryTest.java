@@ -2,11 +2,10 @@ package com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository;
 
 import com.texoit.goldenraspberryawardsapi.adapters.out.movie.repository.MovieRepository;
 import com.texoit.goldenraspberryawardsapi.adapters.out.movie.repository.entity.MovieEntity;
-import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.ProducerRepository;
 import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.entity.ProducerEntity;
+import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.response.ProducerIntervalsProjection;
 import com.texoit.goldenraspberryawardsapi.adapters.out.studio.repository.StudioRepository;
 import com.texoit.goldenraspberryawardsapi.adapters.out.studio.repository.entity.StudioEntity;
-import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.response.ProducerIntervalsProjection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

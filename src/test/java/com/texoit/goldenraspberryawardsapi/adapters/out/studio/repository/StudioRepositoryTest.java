@@ -1,6 +1,5 @@
 package com.texoit.goldenraspberryawardsapi.adapters.out.studio.repository;
 
-import com.texoit.goldenraspberryawardsapi.adapters.out.studio.repository.StudioRepository;
 import com.texoit.goldenraspberryawardsapi.adapters.out.studio.repository.entity.StudioEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
