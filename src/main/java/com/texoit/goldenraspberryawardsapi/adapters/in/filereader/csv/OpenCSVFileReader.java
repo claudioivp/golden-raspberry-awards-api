@@ -5,6 +5,7 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.CSVFileReaderConfig;
 import com.texoit.goldenraspberryawardsapi.application.ports.in.csv.CSVFileReaderInputPort;
 import org.springframework.stereotype.Component;
 
@@ -17,13 +18,13 @@ import java.util.List;
 public class OpenCSVFileReader implements CSVFileReaderInputPort {
 
     @Override
-    public List<String[]> read(Path filePath) throws IOException, CsvException {
+    public List<String[]> read(Path filePath, CSVFileReaderConfig configuration) throws IOException, CsvException {
         CSVParser parser = new CSVParserBuilder()
-                .withSeparator(';')
+                .withSeparator(configuration.getSeparator())
                 .build();
 
         CSVReader reader = new CSVReaderBuilder(Files.newBufferedReader(filePath))
-                .withSkipLines(1)
+                .withSkipLines(configuration.getLinesToSkip())
                 .withCSVParser(parser)
                 .build();
 

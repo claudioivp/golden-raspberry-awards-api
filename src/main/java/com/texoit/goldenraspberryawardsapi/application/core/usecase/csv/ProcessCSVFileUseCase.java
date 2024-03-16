@@ -1,6 +1,7 @@
 package com.texoit.goldenraspberryawardsapi.application.core.usecase.csv;
 
 import com.opencsv.exceptions.CsvException;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.CSVFileReaderConfig;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.movie.Movie;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.Producer;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.studio.Studio;
@@ -32,8 +33,8 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
     }
 
     @Override
-    public void start(Path filePath) throws IOException, CsvException {
-        List<String[]> lines = csvFileReaderInputPort.read(filePath);
+    public void start(Path filePath, CSVFileReaderConfig configuration) throws IOException, CsvException {
+        List<String[]> lines = csvFileReaderInputPort.read(filePath, configuration);
 
         var movies = processLines(lines);
 
