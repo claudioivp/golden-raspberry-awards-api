@@ -58,4 +58,13 @@ public class Producer {
         this.movies.clear();
         this.movies.addAll(movies);
     }
+
+    @Override
+    public String toString() {
+        return "Producer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", movies=" + movies +
+                '}';
+    }
 }

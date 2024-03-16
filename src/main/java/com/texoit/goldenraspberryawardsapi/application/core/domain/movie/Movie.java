@@ -88,4 +88,16 @@ public class Movie {
     public void setWinner(Boolean winner) {
         this.winner = winner;
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", year=" + year +
+                ", title='" + title + '\'' +
+                ", studios=" + studios +
+                ", producers=" + producers +
+                ", winner=" + winner +
+                '}';
+    }
 }
