@@ -22,10 +22,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -90,11 +87,11 @@ public class MovieControllerTest {
         movieRequestToSave = new MovieRequest(
                 1990,
                 "Movie Test",
-                new LinkedHashSet<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(
                         new MovieStudioRequest(associatedFilmDistribution.getId()),
                         new MovieStudioRequest(universalStudios.getId()))
                 ),
-                new LinkedHashSet<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(
                         new MovieProducerRequest(stevenSpielberg.getId()),
                         new MovieProducerRequest(joelSilver.getId()),
                         new MovieProducerRequest(matthewVaughn.getId()))
@@ -105,11 +102,11 @@ public class MovieControllerTest {
                 UUID.fromString("fc94b1fc-576c-4135-a660-8bdde22198aa"),
                 movieRequestToSave.year(),
                 movieRequestToSave.title(),
-                new LinkedHashSet<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(
                         associatedFilmDistribution,
                         universalStudios)
                 ),
-                new LinkedHashSet<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(
                         stevenSpielberg,
                         joelSilver,
                         matthewVaughn)
@@ -197,11 +194,11 @@ public class MovieControllerTest {
         movieRequestToSave = new MovieRequest(
                 null,
                 "Movie Title",
-                new LinkedHashSet<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(
                         new MovieStudioRequest(associatedFilmDistribution.getId()),
                         new MovieStudioRequest(universalStudios.getId()))
                 ),
-                new LinkedHashSet<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(
                         new MovieProducerRequest(stevenSpielberg.getId()),
                         new MovieProducerRequest(joelSilver.getId()),
                         new MovieProducerRequest(matthewVaughn.getId()))
@@ -225,11 +222,11 @@ public class MovieControllerTest {
         movieRequestToSave = new MovieRequest(
                 1990,
                 null,
-                new LinkedHashSet<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(
                         new MovieStudioRequest(associatedFilmDistribution.getId()),
                         new MovieStudioRequest(universalStudios.getId()))
                 ),
-                new LinkedHashSet<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(
                         new MovieProducerRequest(stevenSpielberg.getId()),
                         new MovieProducerRequest(joelSilver.getId()),
                         new MovieProducerRequest(matthewVaughn.getId()))
@@ -256,7 +253,7 @@ public class MovieControllerTest {
                 1990,
                 "Movie Title",
                 null,
-                new LinkedHashSet<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(
                         new MovieProducerRequest(stevenSpielberg.getId()),
                         new MovieProducerRequest(joelSilver.getId()),
                         new MovieProducerRequest(matthewVaughn.getId()))
@@ -280,7 +277,7 @@ public class MovieControllerTest {
         movieRequestToSave = new MovieRequest(
                 1990,
                 "Movie Title",
-                new LinkedHashSet<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(
                         new MovieStudioRequest(associatedFilmDistribution.getId()),
                         new MovieStudioRequest(universalStudios.getId()))
                 ),

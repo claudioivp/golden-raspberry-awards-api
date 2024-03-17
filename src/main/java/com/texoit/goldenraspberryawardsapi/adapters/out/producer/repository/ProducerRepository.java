@@ -6,8 +6,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 public interface ProducerRepository extends JpaRepository<ProducerEntity, UUID> {
@@ -56,7 +56,7 @@ public interface ProducerRepository extends JpaRepository<ProducerEntity, UUID> 
                     	)
                     """,
             nativeQuery = true)
-    Set<ProducerIntervalsProjection> findMinIntervals();
+    List<ProducerIntervalsProjection> findMinIntervals();
 
     @Query(
             value = """
@@ -99,6 +99,6 @@ public interface ProducerRepository extends JpaRepository<ProducerEntity, UUID> 
                     	)
                     """,
             nativeQuery = true)
-    Set<ProducerIntervalsProjection> findMaxIntervals();
+    List<ProducerIntervalsProjection> findMaxIntervals();
 
 }

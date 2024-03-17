@@ -2,36 +2,33 @@ package com.texoit.goldenraspberryawardsapi.application.core.domain.producer;
 
 import com.texoit.goldenraspberryawardsapi.application.core.domain.movie.Movie;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class Producer {
 
     private UUID id;
     private String name;
-    private final Set<Movie> movies;
+    private final List<Movie> movies;
 
     public Producer() {
-        this.movies = new LinkedHashSet<>();
+        this.movies = new ArrayList<>();
     }
 
-    public Producer(UUID id, String name, Set<Movie> movies) {
+    public Producer(UUID id, String name, List<Movie> movies) {
         this.id = id;
         this.name = name;
-        this.movies = new LinkedHashSet<>(movies);
+        this.movies = new ArrayList<>(movies);
     }
 
     public Producer(String name) {
         this.name = name;
-        this.movies = new LinkedHashSet<>();
+        this.movies = new ArrayList<>();
     }
 
     public Producer(UUID id, String name) {
         this.id = id;
         this.name = name;
-        this.movies = new LinkedHashSet<>();
+        this.movies = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -50,11 +47,11 @@ public class Producer {
         this.name = name;
     }
 
-    public Set<Movie> getMovies() {
-        return Collections.unmodifiableSet(movies);
+    public List<Movie> getMovies() {
+        return Collections.unmodifiableList(movies);
     }
 
-    public void setMovies(Set<Movie> movies) {
+    public void setMovies(List<Movie> movies) {
         this.movies.clear();
         this.movies.addAll(movies);
     }

@@ -2,10 +2,10 @@ package com.texoit.goldenraspberryawardsapi.application.ports.out.producer;
 
 import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.AwardInterval;
 
-import java.util.Set;
+import java.util.List;
 
 public interface FindMinAwardIntervalOutputPort {
 
-    Set<AwardInterval> findAll();
+    List<AwardInterval> findAll();
 
 }

@@ -4,7 +4,7 @@ import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.Awar
 import com.texoit.goldenraspberryawardsapi.application.ports.in.producer.FindMinAwardIntervalInputPort;
 import com.texoit.goldenraspberryawardsapi.application.ports.out.producer.FindMinAwardIntervalOutputPort;
 
-import java.util.Set;
+import java.util.List;
 
 public class FindMinAwardIntervalUseCase implements FindMinAwardIntervalInputPort {
 
@@ -15,7 +15,7 @@ public class FindMinAwardIntervalUseCase implements FindMinAwardIntervalInputPor
     }
 
     @Override
-    public Set<AwardInterval> findAll() {
+    public List<AwardInterval> findAll() {
         return findMinAwardIntervalOutputPort.findAll();
     }
 

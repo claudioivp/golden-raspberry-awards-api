@@ -13,10 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -75,8 +72,8 @@ class FindMovieByIdAdapterTest {
                 UUID.randomUUID(),
                 1990,
                 "Movie Test",
-                new LinkedHashSet<>(Set.of(associatedFilmDistribution, universalStudios)),
-                new LinkedHashSet<>(Set.of(stevenSpielberg, joelSilver, matthewVaughn)),
+                new ArrayList<>(Arrays.asList(associatedFilmDistribution, universalStudios)),
+                new ArrayList<>(Arrays.asList(stevenSpielberg, joelSilver, matthewVaughn)),
                 Boolean.TRUE
         );
     }

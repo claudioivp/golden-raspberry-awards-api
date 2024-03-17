@@ -14,16 +14,16 @@ public class ProducerEntity {
     private String name;
 
     @ManyToMany(mappedBy = "producers", fetch = FetchType.EAGER)
-    private final Set<MovieEntity> movies;
+    private final List<MovieEntity> movies;
 
     public ProducerEntity() {
-        this.movies = new LinkedHashSet<>();
+        this.movies = new ArrayList<>();
     }
 
     public ProducerEntity(UUID id, String name) {
         this.id = id;
         this.name = name;
-        this.movies = new LinkedHashSet<>();
+        this.movies = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -42,13 +42,13 @@ public class ProducerEntity {
         return name;
     }
 
-    public void setMovies(Set<MovieEntity> movies) {
+    public void setMovies(List<MovieEntity> movies) {
         this.movies.clear();
         this.movies.addAll(movies);
     }
 
-    public Set<MovieEntity> getMovies() {
-        return Collections.unmodifiableSet(movies);
+    public List<MovieEntity> getMovies() {
+        return Collections.unmodifiableList(movies);
     }
 
     @Override

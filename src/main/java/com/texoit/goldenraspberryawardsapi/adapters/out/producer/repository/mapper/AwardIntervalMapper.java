@@ -4,11 +4,11 @@ import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.resp
 import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.AwardInterval;
 import org.mapstruct.Mapper;
 
-import java.util.Set;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface AwardIntervalMapper {
 
-    Set<AwardInterval> toAwardInterval(Set<ProducerIntervalsProjection> producerIntervalsProjection);
+    List<AwardInterval> toAwardInterval(List<ProducerIntervalsProjection> producerIntervalsProjection);
 
 }

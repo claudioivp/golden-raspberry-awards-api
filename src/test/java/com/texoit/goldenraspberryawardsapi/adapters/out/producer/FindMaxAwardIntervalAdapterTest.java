@@ -13,10 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -83,32 +80,32 @@ class FindMaxAwardIntervalAdapterTest {
                 UUID.randomUUID(),
                 1990,
                 "Summertime Sadness",
-                new LinkedHashSet<>(Set.of(associatedFilmDistribution, universalStudios)),
-                new LinkedHashSet<>(Set.of(stevenSpielberg, joelSilver)),
+                new ArrayList<>(Arrays.asList(associatedFilmDistribution, universalStudios)),
+                new ArrayList<>(Arrays.asList(stevenSpielberg, joelSilver)),
                 Boolean.TRUE
         );
         aliceInWonderland = new Movie(
                 UUID.randomUUID(),
                 2010,
                 "Alice in Wonderland",
-                new LinkedHashSet<>(Set.of(associatedFilmDistribution)),
-                new LinkedHashSet<>(Set.of(matthewVaughn)),
+                new ArrayList<>(Collections.singletonList(associatedFilmDistribution)),
+                new ArrayList<>(Collections.singletonList(matthewVaughn)),
                 Boolean.TRUE
         );
         theFastAndTheFurious = new Movie(
                 UUID.randomUUID(),
                 2011,
                 "The Fast and the Furious",
-                new LinkedHashSet<>(Set.of(universalStudios)),
-                new LinkedHashSet<>(Set.of(joelSilver, matthewVaughn)),
+                new ArrayList<>(Collections.singletonList(universalStudios)),
+                new ArrayList<>(Arrays.asList(joelSilver, matthewVaughn)),
                 Boolean.TRUE
         );
         theBlueLagoon = new Movie(
                 UUID.randomUUID(),
                 2020,
                 "The Blue Lagoon",
-                new LinkedHashSet<>(Set.of(newLine, universalStudios)),
-                new LinkedHashSet<>(Set.of(joelSilver)),
+                new ArrayList<>(Arrays.asList(newLine, universalStudios)),
+                new ArrayList<>(Collections.singletonList(joelSilver)),
                 Boolean.TRUE
         );
     }
