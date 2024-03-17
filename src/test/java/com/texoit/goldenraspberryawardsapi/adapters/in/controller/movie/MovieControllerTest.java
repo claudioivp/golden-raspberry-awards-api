@@ -302,8 +302,6 @@ public class MovieControllerTest {
         producerRepository.saveAllAndFlush(Arrays.asList(stevenSpielberg, joelSilver, matthewVaughn));
         movieRepository.saveAndFlush(movieEntityToSave);
 
-        List<ProducerEntity> all = producerRepository.findAll();
-
         // When
         mockMvc.perform(get("/api/v1/movies/{id}", movieEntityToSave.getId())
                         .contentType(MediaType.APPLICATION_JSON))
