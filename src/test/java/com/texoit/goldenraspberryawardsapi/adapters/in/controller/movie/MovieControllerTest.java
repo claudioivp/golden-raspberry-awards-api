@@ -24,9 +24,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -99,6 +101,21 @@ public class MovieControllerTest {
                 ),
                 Boolean.TRUE
         );
+        movieEntityToSave = new MovieEntity(
+                UUID.fromString("fc94b1fc-576c-4135-a660-8bdde22198aa"),
+                movieRequestToSave.year(),
+                movieRequestToSave.title(),
+                new LinkedHashSet<>(Arrays.asList(
+                        associatedFilmDistribution,
+                        universalStudios)
+                ),
+                new LinkedHashSet<>(Arrays.asList(
+                        stevenSpielberg,
+                        joelSilver,
+                        matthewVaughn)
+                ),
+                Boolean.TRUE
+        );
     }
 
     @Test
@@ -128,16 +145,26 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$.id").isNotEmpty()) // Then
                 .andExpect(jsonPath("$.year").value(movieRequestToSave.year())) // <Then>
                 .andExpect(jsonPath("$.title").value(movieRequestToSave.title()))
-                .andExpect(jsonPath("$.studios[0].id").value(associatedFilmDistribution.getId().toString()))
-                .andExpect(jsonPath("$.studios[0].name").value(associatedFilmDistribution.getName()))
-                .andExpect(jsonPath("$.studios[1].id").value(universalStudios.getId().toString()))
-                .andExpect(jsonPath("$.studios[1].name").value(universalStudios.getName()))
-                .andExpect(jsonPath("$.producers[0].id").value(stevenSpielberg.getId().toString()))
-                .andExpect(jsonPath("$.producers[0].name").value(stevenSpielberg.getName()))
-                .andExpect(jsonPath("$.producers[1].id").value(joelSilver.getId().toString()))
-                .andExpect(jsonPath("$.producers[1].name").value(joelSilver.getName()))
-                .andExpect(jsonPath("$.producers[2].id").value(matthewVaughn.getId().toString()))
-                .andExpect(jsonPath("$.producers[2].name").value(matthewVaughn.getName()))
+                .andExpect(jsonPath(
+                        "$.studios[?(@.id=='" + associatedFilmDistribution.getId().toString() +
+                                "' && @.name=='" + associatedFilmDistribution.getName() + "')]").exists()
+                )
+                .andExpect(jsonPath(
+                        "$.studios[?(@.id=='" + universalStudios.getId().toString() +
+                                "' && @.name=='" + universalStudios.getName() + "')]").exists()
+                )
+                .andExpect(jsonPath(
+                        "$.producers[?(@.id=='" + stevenSpielberg.getId().toString() +
+                                "' && @.name=='" + stevenSpielberg.getName() + "')]").exists()
+                )
+                .andExpect(jsonPath(
+                        "$.producers[?(@.id=='" + joelSilver.getId().toString() +
+                                "' && @.name=='" + joelSilver.getName() + "')]").exists()
+                )
+                .andExpect(jsonPath(
+                        "$.producers[?(@.id=='" + matthewVaughn.getId().toString() +
+                                "' && @.name=='" + matthewVaughn.getName() + "')]").exists()
+                )
                 .andExpect(jsonPath("$.winner").value(movieRequestToSave.winner())); // </Then>
 
         // Then
@@ -267,6 +294,47 @@ public class MovieControllerTest {
                         .content(objectMapper.writeValueAsString(movieRequestToSave)))
                 .andExpect(status().isBadRequest()) // Then
                 .andExpect(jsonPath("$.errors[?(@.field == 'producers')].message").value("Deve haver pelo menos um produtor relacionado ao filme")); // Then
+    }
+
+    @Test
+    @DisplayName("MovieController deve retornar 200 OK, além da entidade persistida")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void testRetrieveMovie() throws Exception {
+        // Given
+        studioRepository.saveAllAndFlush(Arrays.asList(associatedFilmDistribution, universalStudios));
+        producerRepository.saveAllAndFlush(Arrays.asList(stevenSpielberg, joelSilver, matthewVaughn));
+        movieRepository.saveAndFlush(movieEntityToSave);
+
+        List<ProducerEntity> all = producerRepository.findAll();
+
+        // When
+        mockMvc.perform(get("/api/v1/movies/{id}", movieEntityToSave.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()) // Then
+                .andExpect(jsonPath("$.id").isNotEmpty()) // Then
+                .andExpect(jsonPath("$.year").value(movieEntityToSave.getYear())) // <Then>
+                .andExpect(jsonPath("$.title").value(movieEntityToSave.getTitle()))
+                .andExpect(jsonPath(
+                        "$.studios[?(@.id=='" + associatedFilmDistribution.getId().toString() +
+                                "' && @.name=='" + associatedFilmDistribution.getName() + "')]").exists()
+                )
+                .andExpect(jsonPath(
+                        "$.studios[?(@.id=='" + universalStudios.getId().toString() +
+                                "' && @.name=='" + universalStudios.getName() + "')]").exists()
+                )
+                .andExpect(jsonPath(
+                        "$.producers[?(@.id=='" + stevenSpielberg.getId().toString() +
+                                "' && @.name=='" + stevenSpielberg.getName() + "')]").exists()
+                )
+                .andExpect(jsonPath(
+                        "$.producers[?(@.id=='" + joelSilver.getId().toString() +
+                                "' && @.name=='" + joelSilver.getName() + "')]").exists()
+                )
+                .andExpect(jsonPath(
+                        "$.producers[?(@.id=='" + matthewVaughn.getId().toString() +
+                                "' && @.name=='" + matthewVaughn.getName() + "')]").exists()
+                )
+                .andExpect(jsonPath("$.winner").value(movieEntityToSave.getWinner())); // </Then>
     }
 
 }
