@@ -1,6 +1,6 @@
 package com.texoit.goldenraspberryawardsapi.config.producer;
 
-import com.texoit.goldenraspberryawardsapi.application.core.usecase.movie.InsertProducerUseCase;
+import com.texoit.goldenraspberryawardsapi.application.core.usecase.producer.InsertProducerUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
