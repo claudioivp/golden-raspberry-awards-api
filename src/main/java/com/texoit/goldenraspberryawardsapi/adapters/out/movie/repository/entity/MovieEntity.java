@@ -26,7 +26,7 @@ public class MovieEntity {
             joinColumns = @JoinColumn(name = "movie_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "studio_id", nullable = false)
     )
-    private Set<StudioEntity> studios;
+    private final Set<StudioEntity> studios;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -34,7 +34,7 @@ public class MovieEntity {
             joinColumns = @JoinColumn(name = "movie_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "producer_id", nullable = false)
     )
-    private Set<ProducerEntity> producers;
+    private final Set<ProducerEntity> producers;
 
     private Boolean winner;
 
@@ -49,7 +49,6 @@ public class MovieEntity {
         this.title = title;
         this.studios = new LinkedHashSet<>(studios);
         this.producers = new LinkedHashSet<>(producers);
-        this.studios = studios;
         this.winner = winner;
     }
 
@@ -77,12 +76,11 @@ public class MovieEntity {
         this.title = title;
     }
 
-    public Set<ProducerEntity> getProducers() {
-        return producers;
-    }
+    public Set<ProducerEntity> getProducers() { return producers; }
 
     public void setProducers(Set<ProducerEntity> producers) {
-        this.producers = producers;
+        this.producers.clear();
+        this.producers.addAll(producers);
     }
 
     public Set<StudioEntity> getStudios() {
@@ -90,7 +88,8 @@ public class MovieEntity {
     }
 
     public void setStudios(Set<StudioEntity> studios) {
-        this.studios = studios;
+        this.studios.clear();
+        this.studios.addAll(studios);
     }
 
     public Boolean getWinner() {
