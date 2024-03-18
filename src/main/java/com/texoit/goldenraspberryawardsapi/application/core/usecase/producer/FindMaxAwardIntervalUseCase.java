@@ -4,7 +4,7 @@ import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.Awar
 import com.texoit.goldenraspberryawardsapi.application.ports.in.producer.FindMaxAwardIntervalInputPort;
 import com.texoit.goldenraspberryawardsapi.application.ports.out.producer.FindMaxAwardIntervalOutputPort;
 
-import java.util.Set;
+import java.util.List;
 
 public class FindMaxAwardIntervalUseCase implements FindMaxAwardIntervalInputPort {
 
@@ -15,7 +15,7 @@ public class FindMaxAwardIntervalUseCase implements FindMaxAwardIntervalInputPor
     }
 
     @Override
-    public Set<AwardInterval> findAll() {
+    public List<AwardInterval> findAll() {
         return findMaxAwardIntervalOutputPort.findAll();
     }
 

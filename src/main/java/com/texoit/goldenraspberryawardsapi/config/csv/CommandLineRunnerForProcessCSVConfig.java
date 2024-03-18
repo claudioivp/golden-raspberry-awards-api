@@ -1,6 +1,7 @@
 package com.texoit.goldenraspberryawardsapi.config.csv;
 
 import com.opencsv.exceptions.CsvException;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.CSVFileReaderConfig;
 import com.texoit.goldenraspberryawardsapi.application.ports.in.csv.ProcessCSVFileInputPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +32,19 @@ public class CommandLineRunnerForProcessCSVConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws URISyntaxException, IOException, CsvException {
+        logger.info("CSV file processing is being started...");
+
         Path filePath = Paths.get(
             ClassLoader.getSystemResource("movielist.csv").toURI());
-        processCSVFileInputPort.start(filePath);
 
-        logger.info("Processamento do arquivo concluído com sucesso.");
+        CSVFileReaderConfig configuration = new CSVFileReaderConfig(
+                ';',
+                1
+        );
+
+        processCSVFileInputPort.start(filePath, configuration);
+
+        logger.info("CSV file processing completed successfully.");
     }
 
 }

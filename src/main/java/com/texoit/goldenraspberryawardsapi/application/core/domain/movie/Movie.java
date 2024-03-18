@@ -3,39 +3,36 @@ package com.texoit.goldenraspberryawardsapi.application.core.domain.movie;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.Producer;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.studio.Studio;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class Movie {
 
     private UUID id;
     private Integer year;
     private String title;
-    private final Set<Studio> studios;
-    private final Set<Producer> producers;
+    private final List<Studio> studios;
+    private final List<Producer> producers;
     private Boolean winner;
 
     public Movie() {
-        this.studios = new LinkedHashSet<>();
-        this.producers = new LinkedHashSet<>();
+        this.studios = new ArrayList<>();
+        this.producers = new ArrayList<>();
     }
 
-    public Movie(UUID id, Integer year, String title, Set<Studio> studios, Set<Producer> producers, Boolean winner) {
+    public Movie(UUID id, Integer year, String title, List<Studio> studios, List<Producer> producers, Boolean winner) {
         this.id = id;
         this.year = year;
         this.title = title;
-        this.studios = new LinkedHashSet<>(studios);
-        this.producers = new LinkedHashSet<>(producers);
+        this.studios = new ArrayList<>(studios);
+        this.producers = new ArrayList<>(producers);
         this.winner = winner;
     }
 
-    public Movie(Integer year, String title, Set<Studio> studios, Set<Producer> producers, Boolean winner) {
+    public Movie(Integer year, String title, List<Studio> studios, List<Producer> producers, Boolean winner) {
         this.year = year;
         this.title = title;
-        this.studios = new LinkedHashSet<>(studios);
-        this.producers = new LinkedHashSet<>(producers);
+        this.studios = new ArrayList<>(studios);
+        this.producers = new ArrayList<>(producers);
         this.winner = winner;
     }
 
@@ -63,20 +60,20 @@ public class Movie {
         this.title = title;
     }
 
-    public Set<Studio> getStudios() {
-        return Collections.unmodifiableSet(studios);
+    public List<Studio> getStudios() {
+        return Collections.unmodifiableList(studios);
     }
 
-    public void setStudios(Set<Studio> studios) {
+    public void setStudios(List<Studio> studios) {
         this.studios.clear();
         this.studios.addAll(studios);
     }
 
-    public Set<Producer> getProducers() {
-        return Collections.unmodifiableSet(producers);
+    public List<Producer> getProducers() {
+        return Collections.unmodifiableList(producers);
     }
 
-    public void setProducers(Set<Producer> producers) {
+    public void setProducers(List<Producer> producers) {
         this.producers.clear();
         this.producers.addAll(producers);
     }
@@ -87,5 +84,17 @@ public class Movie {
 
     public void setWinner(Boolean winner) {
         this.winner = winner;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", year=" + year +
+                ", title='" + title + '\'' +
+                ", studios=" + studios +
+                ", producers=" + producers +
+                ", winner=" + winner +
+                '}';
     }
 }

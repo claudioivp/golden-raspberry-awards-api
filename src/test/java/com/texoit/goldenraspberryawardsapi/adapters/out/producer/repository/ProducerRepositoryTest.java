@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -128,32 +125,32 @@ public class ProducerRepositoryTest {
                 UUID.randomUUID(),
                 1980,
                 "Titanic",
-                new LinkedHashSet<>(Arrays.asList(associatedFilmDistribution)),
-                new LinkedHashSet<>(Arrays.asList(stevenSpielberg)),
+                new ArrayList<>(Collections.singletonList(associatedFilmDistribution)),
+                new ArrayList<>(Collections.singletonList(stevenSpielberg)),
                 Boolean.TRUE
         );
         xanadu = new MovieEntity(
                 UUID.randomUUID(),
                 1984,
                 "Xanadu",
-                new LinkedHashSet<>(Arrays.asList(universalStudios)),
-                new LinkedHashSet<>(Arrays.asList(joelSilver)),
+                new ArrayList<>(Collections.singletonList(universalStudios)),
+                new ArrayList<>(Collections.singletonList(joelSilver)),
                 Boolean.TRUE
         );
         revolution = new MovieEntity(
                 UUID.randomUUID(),
                 1985,
                 "Revolution",
-                new LinkedHashSet<>(Arrays.asList(unitedArtists)),
-                new LinkedHashSet<>(Arrays.asList(joelSilver)),
+                new ArrayList<>(Collections.singletonList(unitedArtists)),
+                new ArrayList<>(Collections.singletonList(joelSilver)),
                 Boolean.TRUE
         );
         cobra = new MovieEntity(
                 UUID.randomUUID(),
                 1989,
                 "Cobra",
-                new LinkedHashSet<>(Arrays.asList(associatedFilmDistribution, universalStudios)),
-                new LinkedHashSet<>(Arrays.asList(stevenSpielberg, matthewVaughn)),
+                new ArrayList<>(Arrays.asList(associatedFilmDistribution, universalStudios)),
+                new ArrayList<>(Arrays.asList(stevenSpielberg, matthewVaughn)),
                 Boolean.TRUE
         );
     }

@@ -1,17 +1,16 @@
 package com.texoit.goldenraspberryawardsapi.infrastructure;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @RestControllerAdvice
 public class ErrorHandler {
@@ -27,16 +26,27 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ValidationErrorDetail>> handleBadRequestError(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ModelMap> handleBadRequestError(MethodArgumentNotValidException ex) {
+        var errorsMap = new ModelMap();
         var errors = ex.getFieldErrors();
-        return ResponseEntity.badRequest().body(errors.stream().map(ValidationErrorDetail::new).toList());
+        errorsMap.addAttribute("errors",errors.stream().map(ValidationErrorDetail::new).toList());
+        return ResponseEntity.badRequest().body(errorsMap);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<List<ValidationErrorDetail>> handleBadRequestError(MethodArgumentTypeMismatchException ex) {
+    public ResponseEntity<ModelMap> handleBadRequestError(MethodArgumentTypeMismatchException ex) {
+        var errorsMap = new ModelMap();
         var errors = new ArrayList<FieldError>();
         errors.add(new FieldError(ex.getName(), Objects.requireNonNull(ex.getPropertyName()), ex.getMessage()));
-        return ResponseEntity.badRequest().body(errors.stream().map(ValidationErrorDetail::new).toList());
+        errorsMap.addAttribute("errors", errors.stream().map(ValidationErrorDetail::new).toList());
+        return ResponseEntity.badRequest().body(errorsMap);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ModelMap> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        var errorsMap = new ModelMap();
+        errorsMap.addAttribute("errors", Map.of("message", "Falha na integridade dos dados"));
+        return ResponseEntity.badRequest().body(errorsMap);
     }
 
     public record ValidationErrorDetail(String field, String message) {

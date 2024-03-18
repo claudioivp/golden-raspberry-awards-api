@@ -2,14 +2,14 @@ package com.texoit.goldenraspberryawardsapi.adapters.in.controller.producer.resp
 
 import com.texoit.goldenraspberryawardsapi.adapters.in.controller.studio.response.StudioResponse;
 
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 public record ProducerMovieResponse(
         UUID id,
         Integer year,
         String title,
-        Set<StudioResponse> studios,
+        List<StudioResponse> studios,
         Boolean winner) {
 
 }

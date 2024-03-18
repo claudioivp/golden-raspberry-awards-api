@@ -7,7 +7,7 @@ import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.Awar
 import com.texoit.goldenraspberryawardsapi.application.ports.out.producer.FindMinAwardIntervalOutputPort;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.List;
 
 @Component
 public class FindMinAwardIntervalAdapter implements FindMinAwardIntervalOutputPort {
@@ -21,8 +21,8 @@ public class FindMinAwardIntervalAdapter implements FindMinAwardIntervalOutputPo
     }
 
     @Override
-    public Set<AwardInterval> findAll() {
-        Set<ProducerIntervalsProjection> intervals = producerRepository.findMinIntervals();
+    public List<AwardInterval> findAll() {
+        List<ProducerIntervalsProjection> intervals = producerRepository.findMinIntervals();
         return awardIntervalMapper.toAwardInterval(intervals);
     }
 

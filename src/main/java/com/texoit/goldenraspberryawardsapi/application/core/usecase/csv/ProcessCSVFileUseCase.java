@@ -1,6 +1,7 @@
 package com.texoit.goldenraspberryawardsapi.application.core.usecase.csv;
 
 import com.opencsv.exceptions.CsvException;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.CSVFileReaderConfig;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.movie.Movie;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.Producer;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.studio.Studio;
@@ -14,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
@@ -32,40 +32,40 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
     }
 
     @Override
-    public void start(Path filePath) throws IOException, CsvException {
-        List<String[]> lines = csvFileReaderInputPort.read(filePath);
+    public void start(Path filePath, CSVFileReaderConfig configuration) throws IOException, CsvException {
+        List<String[]> lines = csvFileReaderInputPort.read(filePath, configuration);
 
         var movies = processLines(lines);
 
         movies.forEach(movie -> {
-            Set<Studio> studios = movie.getStudios()
+            List<Studio> studios = movie.getStudios()
                     .stream()
                     .map(findStudioByNameOrSaveInputPort::execute)
-                    .collect(Collectors.toSet());
-            Set<Producer> producers = movie.getProducers()
+                    .collect(Collectors.toList());
+            List<Producer> producers = movie.getProducers()
                     .stream()
                     .map(findProducerByNameOrSaveInputPort::execute)
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toList());
             insertMovieInputPort.insert(new Movie(movie.getYear(), movie.getTitle(), studios, producers, movie.getWinner()));
         });
     }
 
-    private Set<Movie> processLines(List<String[]> lines) {
+    private List<Movie> processLines(List<String[]> lines) {
         return lines.stream()
                 .map(this::createMovieFromLine)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     private Movie createMovieFromLine(String[] line) {
         var csvLineColumns = new CsvLineColumns(line);
 
-        Set<Studio> studios = Arrays.stream(csvLineColumns.studios)
+        List<Studio> studios = Arrays.stream(csvLineColumns.studios)
                 .map(Studio::new)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
-        Set<Producer> producers = Arrays.stream(csvLineColumns.producers)
+        List<Producer> producers = Arrays.stream(csvLineColumns.producers)
                 .map(Producer::new)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
         return new Movie(
                 csvLineColumns.year,

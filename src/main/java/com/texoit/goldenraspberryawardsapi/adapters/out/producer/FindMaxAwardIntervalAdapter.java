@@ -7,7 +7,7 @@ import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.Awar
 import com.texoit.goldenraspberryawardsapi.application.ports.out.producer.FindMaxAwardIntervalOutputPort;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.List;
 
 @Component
 public class FindMaxAwardIntervalAdapter implements FindMaxAwardIntervalOutputPort {
@@ -21,8 +21,8 @@ public class FindMaxAwardIntervalAdapter implements FindMaxAwardIntervalOutputPo
     }
 
     @Override
-    public Set<AwardInterval> findAll() {
-        Set<ProducerIntervalsProjection> intervals = producerRepository.findMaxIntervals();
+    public List<AwardInterval> findAll() {
+        List<ProducerIntervalsProjection> intervals = producerRepository.findMaxIntervals();
         return awardIntervalMapper.toAwardInterval(intervals);
     }
 

@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,16 +69,16 @@ public class MovieRepositoryTest {
                 UUID.randomUUID(),
                 1990,
                 "Movie Test",
-                new LinkedHashSet<>(Set.of(associatedFilmDistribution, universalStudios)),
-                new LinkedHashSet<>(Set.of(stevenSpielberg, joelSilver, matthewVaughn)),
+                new ArrayList<>(Arrays.asList(associatedFilmDistribution, universalStudios)),
+                new ArrayList<>(Arrays.asList(stevenSpielberg, joelSilver, matthewVaughn)),
                 Boolean.TRUE
         );
         duplicatedMovieToSave = new MovieEntity(
                 UUID.randomUUID(),
                 1990,
                 "Movie Test",
-                new LinkedHashSet<>(Set.of(associatedFilmDistribution)),
-                new LinkedHashSet<>(Set.of(joelSilver)),
+                new ArrayList<>(Collections.singletonList(associatedFilmDistribution)),
+                new ArrayList<>(Collections.singletonList(joelSilver)),
                 null
         );
     }

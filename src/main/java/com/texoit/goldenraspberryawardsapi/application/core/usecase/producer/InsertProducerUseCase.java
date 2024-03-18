@@ -1,4 +1,4 @@
-package com.texoit.goldenraspberryawardsapi.application.core.usecase.movie;
+package com.texoit.goldenraspberryawardsapi.application.core.usecase.producer;
 
 import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.Producer;
 import com.texoit.goldenraspberryawardsapi.application.ports.in.producer.InsertProducerInputPort;

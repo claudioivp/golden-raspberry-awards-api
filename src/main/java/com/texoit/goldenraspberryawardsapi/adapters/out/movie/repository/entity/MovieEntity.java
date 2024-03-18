@@ -4,10 +4,7 @@ import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.enti
 import com.texoit.goldenraspberryawardsapi.adapters.out.studio.repository.entity.StudioEntity;
 import jakarta.persistence.*;
 
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity(name = "Movie")
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "productionYear", "title" }) })
@@ -26,7 +23,7 @@ public class MovieEntity {
             joinColumns = @JoinColumn(name = "movie_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "studio_id", nullable = false)
     )
-    private Set<StudioEntity> studios;
+    private final List<StudioEntity> studios;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -34,22 +31,21 @@ public class MovieEntity {
             joinColumns = @JoinColumn(name = "movie_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "producer_id", nullable = false)
     )
-    private Set<ProducerEntity> producers;
+    private final List<ProducerEntity> producers;
 
     private Boolean winner;
 
     public MovieEntity() {
-        this.studios = new LinkedHashSet<>();
-        this.producers = new LinkedHashSet<>();
+        this.studios = new ArrayList<>();
+        this.producers = new ArrayList<>();
     }
 
-    public MovieEntity(UUID id, Integer year, String title, Set<StudioEntity> studios, Set<ProducerEntity> producers, Boolean winner) {
+    public MovieEntity(UUID id, Integer year, String title, List<StudioEntity> studios, List<ProducerEntity> producers, Boolean winner) {
         this.id = id;
         this.year = year;
         this.title = title;
-        this.studios = new LinkedHashSet<>(studios);
-        this.producers = new LinkedHashSet<>(producers);
-        this.studios = studios;
+        this.studios = new ArrayList<>(studios);
+        this.producers = new ArrayList<>(producers);
         this.winner = winner;
     }
 
@@ -77,20 +73,20 @@ public class MovieEntity {
         this.title = title;
     }
 
-    public Set<ProducerEntity> getProducers() {
-        return producers;
+    public List<ProducerEntity> getProducers() { return Collections.unmodifiableList(producers); }
+
+    public void setProducers(List<ProducerEntity> producers) {
+        this.producers.clear();
+        this.producers.addAll(producers);
     }
 
-    public void setProducers(Set<ProducerEntity> producers) {
-        this.producers = producers;
+    public List<StudioEntity> getStudios() {
+        return Collections.unmodifiableList(studios);
     }
 
-    public Set<StudioEntity> getStudios() {
-        return studios;
-    }
-
-    public void setStudios(Set<StudioEntity> studios) {
-        this.studios = studios;
+    public void setStudios(List<StudioEntity> studios) {
+        this.studios.clear();
+        this.studios.addAll(studios);
     }
 
     public Boolean getWinner() {
