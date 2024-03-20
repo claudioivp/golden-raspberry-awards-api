@@ -5,6 +5,7 @@ import com.texoit.goldenraspberryawardsapi.adapters.out.studio.repository.mapper
 import com.texoit.goldenraspberryawardsapi.application.core.domain.studio.Studio;
 import com.texoit.goldenraspberryawardsapi.application.ports.out.studio.InsertStudioOutputPort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class InsertStudioAdapter implements InsertStudioOutputPort {
@@ -19,8 +20,10 @@ public class InsertStudioAdapter implements InsertStudioOutputPort {
     }
 
     @Override
+    @Transactional
     public Studio insert(Studio studio) {
-        var studioEntity = studioRepository.save(studioEntityMapper.toStudioEntity(studio));
+        var studioEntity = studioRepository.saveAndFlush(studioEntityMapper.toStudioEntity(studio));
+        studioRepository.refresh(studioEntity);
         return studioEntityMapper.toStudio(studioEntity);
     }
 

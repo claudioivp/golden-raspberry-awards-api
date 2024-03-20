@@ -5,6 +5,7 @@ import com.texoit.goldenraspberryawardsapi.adapters.out.movie.repository.mapper.
 import com.texoit.goldenraspberryawardsapi.application.core.domain.movie.Movie;
 import com.texoit.goldenraspberryawardsapi.application.ports.out.movie.InsertMovieOutputPort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class InsertMovieAdapter implements InsertMovieOutputPort {
@@ -19,8 +20,10 @@ public class InsertMovieAdapter implements InsertMovieOutputPort {
     }
 
     @Override
+    @Transactional
     public Movie insert(Movie movie) {
-        var movieEntity = movieRepository.save(movieEntityMapper.toMovieEntity(movie));
+        var movieEntity = movieRepository.saveAndFlush(movieEntityMapper.toMovieEntity(movie));
+        movieRepository.refresh(movieEntity);
         return movieEntityMapper.toMovie(movieEntity);
     }
 
