@@ -3,14 +3,14 @@ package com.texoit.goldenraspberryawardsapi.application.core.config.csv;
 public class CSVFileReaderConfig {
 
     private final char separator;
-    private final Integer linesToSkip;
+    private final int linesToSkip;
 
-    public CSVFileReaderConfig() {
-        separator = ',';
-        linesToSkip = 0;
+    private CSVFileReaderConfig() {
+        this.separator = ',';
+        this.linesToSkip = 0;
     }
 
-    public CSVFileReaderConfig(char separator, Integer linesToSkip) {
+    private CSVFileReaderConfig(char separator, int linesToSkip) {
         this.separator = separator;
         this.linesToSkip = linesToSkip;
     }
@@ -21,5 +21,13 @@ public class CSVFileReaderConfig {
 
     public Integer getLinesToSkip() {
         return linesToSkip;
+    }
+
+    public static CSVFileReaderConfig fromDefault(){
+        return new CSVFileReaderConfig();
+    }
+
+    public static CSVFileReaderConfig valueOf(char separator, int linesToSkip){
+        return new CSVFileReaderConfig(separator, linesToSkip);
     }
 }
