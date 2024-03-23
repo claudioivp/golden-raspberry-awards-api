@@ -1,7 +1,7 @@
 package com.texoit.goldenraspberryawardsapi.config.csv;
 
-import com.opencsv.exceptions.CsvException;
 import com.texoit.goldenraspberryawardsapi.application.core.config.csv.CSVFileReaderConfig;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidBeanFromCsvException;
 import com.texoit.goldenraspberryawardsapi.application.ports.in.csv.ProcessCSVFileInputPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,8 +46,8 @@ public class CommandLineRunnerForProcessCSVConfig implements CommandLineRunner {
             processCSVFileInputPort.start(filePath, configuration);
 
             logger.info("CSV file processing completed successfully.");
-        } catch (URISyntaxException | IOException | CsvException e) {
-            logger.info("CSV file processing found an error: " + e.getMessage());
+        } catch (URISyntaxException | IOException | InvalidBeanFromCsvException e) {
+            logger.info("CSV file processing found an error: " + e.getMessage().replace("\n", ""));
             logger.info("CSV file processing was not completed successfully.");
         }
     }
