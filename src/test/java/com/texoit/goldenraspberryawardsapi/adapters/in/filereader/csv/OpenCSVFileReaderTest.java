@@ -42,7 +42,7 @@ public class OpenCSVFileReaderTest {
     @Test
     @DisplayName("OpenCSVFileReader deve ler a partir de um arquivo CSV utilizando o separador padrão (,) e sem pular qualquer linha")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    void testDefaultRead() throws IOException, CsvException {
+    public void testDefaultRead() throws IOException, CsvException {
         // Given
         csvFileReaderConfig = CSVFileReaderConfig.fromDefault();
         Path tempFile = Files.createTempFile("test", ".csv");
@@ -81,7 +81,7 @@ public class OpenCSVFileReaderTest {
     @Test
     @DisplayName("OpenCSVFileReader deve ler a partir de um arquivo CSV utilizando o separador customizado (;) e pulando a linha das colunas")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    void testReadWithCustomConfig() throws IOException, CsvException {
+    public void testReadWithCustomConfig() throws IOException, CsvException {
         // Given
         csvFileReaderConfig = CSVFileReaderConfig.valueOf(';', 1);
         Path tempFile = Files.createTempFile("test", ".csv");
@@ -136,7 +136,7 @@ public class OpenCSVFileReaderTest {
     @Test
     @DisplayName("OpenCSVFileReader lançar uma excessão quando não houver 5 colunas no arquivo csv")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    void testInvalidColumnNumber() throws IOException, CsvException {
+    public void testInvalidColumnNumber() throws IOException, CsvException {
         // Given
         csvFileReaderConfig = CSVFileReaderConfig.valueOf(';', 1);
         Path tempFile = Files.createTempFile("test", ".csv");
