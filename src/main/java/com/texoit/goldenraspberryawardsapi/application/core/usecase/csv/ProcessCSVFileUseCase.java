@@ -60,6 +60,8 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
     private Movie createMovieFromLine(String[] line) {
         var csvLineColumns = new CsvLineColumns(line);
 
+        validateMovieAttributes(csvLineColumns);
+
         List<Studio> studios = Arrays.stream(csvLineColumns.studios)
                 .map(Studio::new)
                 .collect(Collectors.toList());
@@ -72,8 +74,6 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
     }
 
     private Movie createMovie(CsvLineColumns csvLineColumns, List<Studio> studios, List<Producer> producers) throws InvalidBeanFromCsvException {
-        validateMovieAttributes(csvLineColumns, studios, producers);
-
         return new Movie(
                 csvLineColumns.year,
                 csvLineColumns.title,
@@ -83,16 +83,19 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
         );
     }
 
-    private void validateMovieAttributes(CsvLineColumns csvLineColumns, List<Studio> studios, List<Producer> producers) throws InvalidBeanFromCsvException {
+    //csvLineColumns.studios.stream().anyMatch(studio -> studio.getName() == null || studio.getName().isBlank()) ||
+    //producers.stream().anyMatch(producer -> producer.getName() == null || producer.getName().isBlank()))
+
+    private void validateMovieAttributes(CsvLineColumns csvLineColumns) throws InvalidBeanFromCsvException {
         if (csvLineColumns.year == null ||
                 csvLineColumns.title == null ||
                 csvLineColumns.title.isBlank() ||
-                studios == null ||
-                studios.isEmpty() ||
-                studios.stream().anyMatch(studio -> studio.getName() == null || studio.getName().isBlank()) ||
-                producers == null ||
-                producers.isEmpty() ||
-                producers.stream().anyMatch(producer -> producer.getName() == null || producer.getName().isBlank())) {
+                csvLineColumns.studios == null ||
+                csvLineColumns.studios.length == 0 ||
+                Arrays.stream(csvLineColumns.studios).map(String::new).anyMatch(String::isBlank) ||
+                csvLineColumns.producers == null ||
+                csvLineColumns.producers.length == 0 ||
+                Arrays.stream(csvLineColumns.producers).map(String::new).anyMatch(String::isBlank)) {
             throw new InvalidBeanFromCsvException("One or more required attributes in the line " + csvLineColumns + " are not present.");
         }
     }
@@ -102,7 +105,7 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
             this(
                 Optional.ofNullable(line[0])
                         .flatMap(str -> Optional.of(Integer.parseInt(str)))
-                        .orElseThrow(null),
+                        .orElse(null),
                 line[1],
                 Optional.ofNullable(line[2])
                         .map(str -> str.split(", ")).orElse(null),
@@ -112,6 +115,17 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
                         .map(str -> str.equalsIgnoreCase("yes"))
                         .orElse(false)
             );
+        }
+
+        @Override
+        public String toString() {
+            return "CsvLineColumns{" +
+                    "year=" + year +
+                    ", title='" + title + '\'' +
+                    ", studios=" + Arrays.toString(studios) +
+                    ", producers=" + Arrays.toString(producers) +
+                    ", winner=" + winner +
+                    '}';
         }
     }
 }
