@@ -1,7 +1,7 @@
 package com.texoit.goldenraspberryawardsapi.application.core.usecase.csv;
 
-import com.opencsv.exceptions.CsvException;
 import com.texoit.goldenraspberryawardsapi.application.core.config.csv.CSVFileReaderConfig;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidBeanFromCsvException;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.movie.Movie;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.Producer;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.studio.Studio;
@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
@@ -32,10 +33,10 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
     }
 
     @Override
-    public void start(Path filePath, CSVFileReaderConfig configuration) throws IOException, CsvException {
+    public void start(Path filePath, CSVFileReaderConfig configuration) throws IOException, InvalidBeanFromCsvException {
         List<String[]> lines = csvFileReaderInputPort.read(filePath, configuration);
 
-        var movies = processLines(lines);
+        var movies = processLines(csvFileReaderInputPort.read(filePath, configuration));
 
         movies.forEach(movie -> {
             List<Studio> studios = movie.getStudios()
@@ -59,6 +60,8 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
     private Movie createMovieFromLine(String[] line) {
         var csvLineColumns = new CsvLineColumns(line);
 
+        validateMovieAttributes(csvLineColumns);
+
         List<Studio> studios = Arrays.stream(csvLineColumns.studios)
                 .map(Studio::new)
                 .collect(Collectors.toList());
@@ -67,6 +70,10 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
                 .map(Producer::new)
                 .collect(Collectors.toList());
 
+        return createMovie(csvLineColumns, studios, producers);
+    }
+
+    private Movie createMovie(CsvLineColumns csvLineColumns, List<Studio> studios, List<Producer> producers) throws InvalidBeanFromCsvException {
         return new Movie(
                 csvLineColumns.year,
                 csvLineColumns.title,
@@ -76,15 +83,49 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
         );
     }
 
+    //csvLineColumns.studios.stream().anyMatch(studio -> studio.getName() == null || studio.getName().isBlank()) ||
+    //producers.stream().anyMatch(producer -> producer.getName() == null || producer.getName().isBlank()))
+
+    private void validateMovieAttributes(CsvLineColumns csvLineColumns) throws InvalidBeanFromCsvException {
+        if (csvLineColumns.year == null ||
+                csvLineColumns.title == null ||
+                csvLineColumns.title.isBlank() ||
+                csvLineColumns.studios == null ||
+                csvLineColumns.studios.length == 0 ||
+                Arrays.stream(csvLineColumns.studios).map(String::new).anyMatch(String::isBlank) ||
+                csvLineColumns.producers == null ||
+                csvLineColumns.producers.length == 0 ||
+                Arrays.stream(csvLineColumns.producers).map(String::new).anyMatch(String::isBlank)) {
+            throw new InvalidBeanFromCsvException("One or more required attributes in the line " + csvLineColumns + " are not present.");
+        }
+    }
+
     record CsvLineColumns(Integer year, String title, String[] studios, String[] producers, Boolean winner) {
         public CsvLineColumns(String[] line) {
             this(
-                Integer.parseInt(line[0]),
+                Optional.ofNullable(line[0])
+                        .flatMap(str -> Optional.of(Integer.parseInt(str)))
+                        .orElse(null),
                 line[1],
-                line[2].split(", "),
-                line[3].split(", | and "),
-                line[4].equalsIgnoreCase("yes")
+                Optional.ofNullable(line[2])
+                        .map(str -> str.split(", ")).orElse(null),
+                Optional.ofNullable(line[3])
+                        .map(str -> str.split(", | and ")).orElse(null),
+                Optional.ofNullable(line[4])
+                        .map(str -> str.equalsIgnoreCase("yes"))
+                        .orElse(false)
             );
+        }
+
+        @Override
+        public String toString() {
+            return "CsvLineColumns{" +
+                    "year=" + year +
+                    ", title='" + title + '\'' +
+                    ", studios=" + Arrays.toString(studios) +
+                    ", producers=" + Arrays.toString(producers) +
+                    ", winner=" + winner +
+                    '}';
         }
     }
 }
