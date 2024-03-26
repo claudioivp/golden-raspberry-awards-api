@@ -1,16 +1,16 @@
 package com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository;
 
-import com.texoit.goldenraspberryawardsapi.adapters.out.base.repository.RefreshableJpaRepository;
 import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.entity.ProducerEntity;
 import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.response.ProducerIntervalsProjection;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ProducerRepository extends RefreshableJpaRepository<ProducerEntity, UUID> {
+public interface ProducerRepository extends JpaRepository<ProducerEntity, UUID> {
 
     @Cacheable(value="producers", unless = "#result == null")
     Optional<ProducerEntity> findByName(String name);
