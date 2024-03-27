@@ -2,7 +2,7 @@ package com.texoit.goldenraspberryawardsapi.adapters.in.filereader.csv;
 
 import com.opencsv.exceptions.CsvException;
 import com.texoit.goldenraspberryawardsapi.application.core.config.csv.CSVFileReaderConfig;
-import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidBeanFromCsvException;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidDomainException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,7 +147,7 @@ public class OpenCSVFileReaderTest {
                 """);
 
         // Then
-        InvalidBeanFromCsvException csvException = assertThrows(InvalidBeanFromCsvException.class, () -> {
+        InvalidDomainException csvException = assertThrows(InvalidDomainException.class, () -> {
             // When
             List<String[]> data = openCSVFileReader.read(tempFile, csvFileReaderConfig);
         });

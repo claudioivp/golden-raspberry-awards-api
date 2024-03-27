@@ -1,7 +1,7 @@
 package com.texoit.goldenraspberryawardsapi.application.core.usecase.csv;
 
 import com.texoit.goldenraspberryawardsapi.application.core.config.csv.CSVFileReaderConfig;
-import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidBeanFromCsvException;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidDomainException;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.movie.Movie;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.Producer;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.studio.Studio;
@@ -33,7 +33,7 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
     }
 
     @Override
-    public void start(Path filePath, CSVFileReaderConfig configuration) throws IOException, InvalidBeanFromCsvException {
+    public void start(Path filePath, CSVFileReaderConfig configuration) throws IOException, InvalidDomainException {
         List<String[]> lines = csvFileReaderInputPort.read(filePath, configuration);
 
         var movies = processLines(csvFileReaderInputPort.read(filePath, configuration));
@@ -73,7 +73,7 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
         return createMovie(csvLineColumns, studios, producers);
     }
 
-    private Movie createMovie(CsvLineColumns csvLineColumns, List<Studio> studios, List<Producer> producers) throws InvalidBeanFromCsvException {
+    private Movie createMovie(CsvLineColumns csvLineColumns, List<Studio> studios, List<Producer> producers) throws InvalidDomainException {
         return new Movie(
                 csvLineColumns.year,
                 csvLineColumns.title,
@@ -86,7 +86,7 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
     //csvLineColumns.studios.stream().anyMatch(studio -> studio.getName() == null || studio.getName().isBlank()) ||
     //producers.stream().anyMatch(producer -> producer.getName() == null || producer.getName().isBlank()))
 
-    private void validateMovieAttributes(CsvLineColumns csvLineColumns) throws InvalidBeanFromCsvException {
+    private void validateMovieAttributes(CsvLineColumns csvLineColumns) throws InvalidDomainException {
         if (csvLineColumns.year == null ||
                 csvLineColumns.title == null ||
                 csvLineColumns.title.isBlank() ||
@@ -96,7 +96,7 @@ public class ProcessCSVFileUseCase implements ProcessCSVFileInputPort {
                 csvLineColumns.producers == null ||
                 csvLineColumns.producers.length == 0 ||
                 Arrays.stream(csvLineColumns.producers).map(String::new).anyMatch(String::isBlank)) {
-            throw new InvalidBeanFromCsvException("One or more required attributes in the line " + csvLineColumns + " are not present.");
+            throw new InvalidDomainException("One or more required attributes in the line " + csvLineColumns + " are not present.");
         }
     }
 

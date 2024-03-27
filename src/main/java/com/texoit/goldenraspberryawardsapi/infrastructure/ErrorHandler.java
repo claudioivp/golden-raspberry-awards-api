@@ -1,6 +1,6 @@
 package com.texoit.goldenraspberryawardsapi.infrastructure;
 
-import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidBeanFromCsvException;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidDomainException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -53,8 +53,8 @@ public class ErrorHandler {
         return ResponseEntity.badRequest().body(errorsMap);
     }
 
-    @ExceptionHandler(InvalidBeanFromCsvException.class)
-    public ResponseEntity<ModelMap> handleInvalidBeanFromCsvException(InvalidBeanFromCsvException ex) {
+    @ExceptionHandler(InvalidDomainException.class)
+    public ResponseEntity<ModelMap> handleInvalidBeanFromCsvException(InvalidDomainException ex) {
         var errorsMap = new ModelMap();
         errorsMap.addAttribute("errors", Map.of("message", ex.getMessage()));
         return ResponseEntity.badRequest().body(errorsMap);

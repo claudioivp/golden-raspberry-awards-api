@@ -10,7 +10,7 @@ import com.opencsv.validators.RowFunctionValidator;
 import com.opencsv.validators.RowValidator;
 import com.texoit.goldenraspberryawardsapi.adapters.in.filereader.csv.processor.BlankColumnsBecomeNull;
 import com.texoit.goldenraspberryawardsapi.application.core.config.csv.CSVFileReaderConfig;
-import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidBeanFromCsvException;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidDomainException;
 import com.texoit.goldenraspberryawardsapi.application.ports.in.csv.CSVFileReaderInputPort;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +31,7 @@ public class OpenCSVFileReader implements CSVFileReaderInputPort {
     );
 
     @Override
-    public List<String[]> read(Path filePath, CSVFileReaderConfig configuration) throws IOException, InvalidBeanFromCsvException {
+    public List<String[]> read(Path filePath, CSVFileReaderConfig configuration) throws IOException, InvalidDomainException {
         CSVParser parser = new CSVParserBuilder()
                 .withSeparator(configuration.getSeparator())
                 .build();
@@ -46,7 +46,7 @@ public class OpenCSVFileReader implements CSVFileReaderInputPort {
         try {
             return reader.readAll();
         } catch (CsvException e) {
-            throw new InvalidBeanFromCsvException(e.getMessage());
+            throw new InvalidDomainException(e.getMessage());
         }
     }
 

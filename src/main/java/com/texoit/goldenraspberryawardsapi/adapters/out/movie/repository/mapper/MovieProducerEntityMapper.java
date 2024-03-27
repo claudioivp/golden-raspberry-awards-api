@@ -2,7 +2,7 @@ package com.texoit.goldenraspberryawardsapi.adapters.out.movie.repository.mapper
 
 import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.ProducerRepository;
 import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.entity.ProducerEntity;
-import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidBeanFromCsvException;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidDomainException;
 import com.texoit.goldenraspberryawardsapi.application.core.domain.producer.Producer;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -24,7 +24,7 @@ public abstract class MovieProducerEntityMapper {
     @AfterMapping
     public ProducerEntity afterMapping(Producer producer, @MappingTarget ProducerEntity producerEntity) {
         return producerRepository.findById(producer.getId()).orElseThrow(
-                () -> new InvalidBeanFromCsvException(String.format("O produtor com ID {%s} não foi encontrado.", producer.getId()))
+                () -> new InvalidDomainException(String.format("O produtor com ID {%s} não foi encontrado.", producer.getId()))
         );
     }
 

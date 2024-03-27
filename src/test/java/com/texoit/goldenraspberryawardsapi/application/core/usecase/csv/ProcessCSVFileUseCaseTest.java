@@ -5,7 +5,7 @@ import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.Prod
 import com.texoit.goldenraspberryawardsapi.adapters.out.producer.repository.response.ProducerIntervalsProjection;
 import com.texoit.goldenraspberryawardsapi.adapters.out.studio.repository.StudioRepository;
 import com.texoit.goldenraspberryawardsapi.application.core.config.csv.CSVFileReaderConfig;
-import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidBeanFromCsvException;
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidDomainException;
 import com.texoit.goldenraspberryawardsapi.application.ports.in.csv.ProcessCSVFileInputPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -69,7 +69,7 @@ class ProcessCSVFileUseCaseTest {
     @Test
     @DisplayName("ProcessCSVFileInputPort deve persistir corretamente o arquivo CSV")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testRealCsvFileProcessing() throws IOException, InvalidBeanFromCsvException, URISyntaxException {
+    public void testRealCsvFileProcessing() throws IOException, InvalidDomainException, URISyntaxException {
         // Given
         int EXPECTED_STUDIOS = 6;
         int EXPECTED_PRODUCERS = 16;
@@ -93,7 +93,7 @@ class ProcessCSVFileUseCaseTest {
     @Test
     @DisplayName("ProcessCSVFileInputPort deve lançar uma exceção quando o campo 'year' for nulo")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testCsvFileProcessingYearNull() throws IOException, InvalidBeanFromCsvException, URISyntaxException {
+    public void testCsvFileProcessingYearNull() throws IOException, InvalidDomainException, URISyntaxException {
         // Given
         filePath = Files.createTempFile("test", ".csv");
         Files.writeString(filePath, """
@@ -103,7 +103,7 @@ class ProcessCSVFileUseCaseTest {
 
         // When
         var invalidBeanFromCsvException = assertThrows(
-                InvalidBeanFromCsvException.class,
+                InvalidDomainException.class,
                 () -> {
                     // When
                     processCSVFileInputPort.start(filePath, configuration);
@@ -116,7 +116,7 @@ class ProcessCSVFileUseCaseTest {
     @Test
     @DisplayName("ProcessCSVFileInputPort deve lançar uma exceção quando o campo 'title' for nulo")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testCsvFileProcessingTitleNull() throws IOException, InvalidBeanFromCsvException, URISyntaxException {
+    public void testCsvFileProcessingTitleNull() throws IOException, InvalidDomainException, URISyntaxException {
         // Given
         filePath = Files.createTempFile("test", ".csv");
         Files.writeString(filePath, """
@@ -126,7 +126,7 @@ class ProcessCSVFileUseCaseTest {
 
         // When
         var invalidBeanFromCsvException = assertThrows(
-                InvalidBeanFromCsvException.class,
+                InvalidDomainException.class,
                 () -> {
                     // When
                     processCSVFileInputPort.start(filePath, configuration);
@@ -139,7 +139,7 @@ class ProcessCSVFileUseCaseTest {
     @Test
     @DisplayName("ProcessCSVFileInputPort deve lançar uma exceção quando a coleção 'studios' for nula")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testCsvFileProcessingStudiosNull() throws IOException, InvalidBeanFromCsvException, URISyntaxException {
+    public void testCsvFileProcessingStudiosNull() throws IOException, InvalidDomainException, URISyntaxException {
         // Given
         filePath = Files.createTempFile("test", ".csv");
         Files.writeString(filePath, """
@@ -149,7 +149,7 @@ class ProcessCSVFileUseCaseTest {
 
         // When
         var invalidBeanFromCsvException = assertThrows(
-                InvalidBeanFromCsvException.class,
+                InvalidDomainException.class,
                 () -> {
                     // When
                     processCSVFileInputPort.start(filePath, configuration);
@@ -162,7 +162,7 @@ class ProcessCSVFileUseCaseTest {
     @Test
     @DisplayName("ProcessCSVFileInputPort deve lançar uma exceção quando o campo 'name' de um item da coleção 'studios' estiver em branco")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testCsvFileProcessingStudiosNameNull() throws IOException, InvalidBeanFromCsvException, URISyntaxException {
+    public void testCsvFileProcessingStudiosNameNull() throws IOException, InvalidDomainException, URISyntaxException {
         // Given
         filePath = Files.createTempFile("test", ".csv");
         Files.writeString(filePath, """
@@ -172,7 +172,7 @@ class ProcessCSVFileUseCaseTest {
 
         // When
         var invalidBeanFromCsvException = assertThrows(
-                InvalidBeanFromCsvException.class,
+                InvalidDomainException.class,
                 () -> {
                     // When
                     processCSVFileInputPort.start(filePath, configuration);
@@ -185,7 +185,7 @@ class ProcessCSVFileUseCaseTest {
     @Test
     @DisplayName("ProcessCSVFileInputPort deve lançar uma exceção quando a coleção 'producers' for nula")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testCsvFileProcessingProducersNull() throws IOException, InvalidBeanFromCsvException, URISyntaxException {
+    public void testCsvFileProcessingProducersNull() throws IOException, InvalidDomainException, URISyntaxException {
         // Given
         filePath = Files.createTempFile("test", ".csv");
         Files.writeString(filePath, """
@@ -195,7 +195,7 @@ class ProcessCSVFileUseCaseTest {
 
         // When
         var invalidBeanFromCsvException = assertThrows(
-                InvalidBeanFromCsvException.class,
+                InvalidDomainException.class,
                 () -> {
                     // When
                     processCSVFileInputPort.start(filePath, configuration);
@@ -208,7 +208,7 @@ class ProcessCSVFileUseCaseTest {
     @Test
     @DisplayName("ProcessCSVFileInputPort deve lançar uma exceção quando o campo 'name' de um item da coleção 'producers' estiver em branco")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testCsvFileProcessingProducersNameNull() throws IOException, InvalidBeanFromCsvException, URISyntaxException {
+    public void testCsvFileProcessingProducersNameNull() throws IOException, InvalidDomainException, URISyntaxException {
         // Given
         filePath = Files.createTempFile("test", ".csv");
         Files.writeString(filePath, """
@@ -218,7 +218,7 @@ class ProcessCSVFileUseCaseTest {
 
         // When
         var invalidBeanFromCsvException = assertThrows(
-                InvalidBeanFromCsvException.class,
+                InvalidDomainException.class,
                 () -> {
                     // When
                     processCSVFileInputPort.start(filePath, configuration);
