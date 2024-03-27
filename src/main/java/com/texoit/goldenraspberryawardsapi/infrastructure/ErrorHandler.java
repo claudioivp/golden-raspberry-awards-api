@@ -1,5 +1,6 @@
 package com.texoit.goldenraspberryawardsapi.infrastructure;
 
+import com.texoit.goldenraspberryawardsapi.application.core.config.csv.InvalidBeanFromCsvException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class ErrorHandler {
@@ -46,6 +50,13 @@ public class ErrorHandler {
     public ResponseEntity<ModelMap> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         var errorsMap = new ModelMap();
         errorsMap.addAttribute("errors", Map.of("message", "Falha na integridade dos dados"));
+        return ResponseEntity.badRequest().body(errorsMap);
+    }
+
+    @ExceptionHandler(InvalidBeanFromCsvException.class)
+    public ResponseEntity<ModelMap> handleInvalidBeanFromCsvException(InvalidBeanFromCsvException ex) {
+        var errorsMap = new ModelMap();
+        errorsMap.addAttribute("errors", Map.of("message", ex.getMessage()));
         return ResponseEntity.badRequest().body(errorsMap);
     }
 
