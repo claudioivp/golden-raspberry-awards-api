@@ -47,6 +47,7 @@ public class MovieControllerTest {
     private ProducerEntity stevenSpielberg;
     private ProducerEntity joelSilver;
     private ProducerEntity matthewVaughn;
+    private UUID nonPersistedId;
 
     @Autowired
     public MovieControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, StudioRepository studioRepository, ProducerRepository producerRepository, MovieRepository movieRepository) {
@@ -113,6 +114,9 @@ public class MovieControllerTest {
                 ),
                 Boolean.TRUE
         );
+
+        // Given UUID
+        nonPersistedId = UUID.fromString("37adc3f2-b222-49f3-bd8d-8bacf5ecb13a");
     }
 
     @Test
@@ -242,8 +246,6 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$.errors[?(@.field == 'title')].message").value("O título não deve estar em branco")); // Then
     }
 
-
-
     @Test
     @DisplayName("MovieController deve retornar 400 Bad Request ao tentar inserir uma entidade a partir de um formulário MovieRequest com o campo 'studios' vazio")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
@@ -270,6 +272,35 @@ public class MovieControllerTest {
     }
 
     @Test
+    @DisplayName("MovieController deve retornar 400 Bad Request ao tentar inserir uma entidade a partir de um formulário MovieRequest com o campo 'studios' contendo um ID inexistente")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void testBadRequestWhenInsertingNotFoundStudio() throws Exception {
+        // Given
+        producerRepository.saveAllAndFlush(Arrays.asList(stevenSpielberg, joelSilver, matthewVaughn));
+
+        movieRequestToSave = new MovieRequest(
+                1990,
+                "Movie Title",
+                new ArrayList<>(Collections.singletonList(
+                        new MovieStudioRequest(nonPersistedId)
+                )),
+                new ArrayList<>(Arrays.asList(
+                        new MovieProducerRequest(stevenSpielberg.getId()),
+                        new MovieProducerRequest(joelSilver.getId()),
+                        new MovieProducerRequest(matthewVaughn.getId()))
+                ),
+                Boolean.TRUE
+        );
+
+        // When
+        mockMvc.perform(post("/api/v1/movies")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(movieRequestToSave)))
+                .andExpect(status().isBadRequest()) // Then
+                .andExpect(jsonPath("$.errors.message").value(String.format("O estúdio com ID {%s} não foi encontrado.", nonPersistedId))); // Then
+    }
+
+    @Test
     @DisplayName("MovieController deve retornar 400 Bad Request ao tentar inserir uma entidade a partir de um formulário MovieRequest com o campo 'producers' vazio")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testBadRequestWhenInsertingEmptyProducers() throws Exception {
@@ -291,6 +322,36 @@ public class MovieControllerTest {
                         .content(objectMapper.writeValueAsString(movieRequestToSave)))
                 .andExpect(status().isBadRequest()) // Then
                 .andExpect(jsonPath("$.errors[?(@.field == 'producers')].message").value("Deve haver pelo menos um produtor relacionado ao filme")); // Then
+    }
+
+    @Test
+    @DisplayName("MovieController deve retornar 400 Bad Request ao tentar inserir uma entidade a partir de um formulário MovieRequest com o campo 'producers' contendo um ID inexistente")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void testBadRequestWhenInsertingNotFoundProducer() throws Exception {
+        // Given
+        studioRepository.saveAllAndFlush(Arrays.asList(associatedFilmDistribution, universalStudios));
+
+        movieRequestToSave = new MovieRequest(
+                1990,
+                "Movie Title",
+                new ArrayList<>(Arrays.asList(
+                        new MovieStudioRequest(associatedFilmDistribution.getId()),
+                        new MovieStudioRequest(universalStudios.getId()))
+                ),
+                new ArrayList<>(
+                        Collections.singletonList(
+                                new MovieProducerRequest(nonPersistedId)
+                        )
+                ),
+                Boolean.TRUE
+        );
+
+        // When
+        mockMvc.perform(post("/api/v1/movies")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(movieRequestToSave)))
+                .andExpect(status().isBadRequest()) // Then
+                .andExpect(jsonPath("$.errors.message").value(String.format("O produtor com ID {%s} não foi encontrado.", nonPersistedId))); // Then
     }
 
     @Test
