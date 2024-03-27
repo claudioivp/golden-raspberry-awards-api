@@ -1,0 +1,10 @@
+version: '3'
+services:
+    gra-api:
+      image: maven:3.9.6-eclipse-temurin-17-focal
+      volumes:
+          - .:/home/golden-raspberry-awards-api
+      working_dir: /home/golden-raspberry-awards-api
+      command: bash -c "mvn clean package && java -jar ./target/golden-raspberry-awards-api-0.0.1-SNAPSHOT.jar"
+      ports:
+        - 8080:8080
