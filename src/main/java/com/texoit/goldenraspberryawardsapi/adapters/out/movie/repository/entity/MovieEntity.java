@@ -73,13 +73,6 @@ public class MovieEntity {
         this.title = title;
     }
 
-    public List<ProducerEntity> getProducers() { return Collections.unmodifiableList(producers); }
-
-    public void setProducers(List<ProducerEntity> producers) {
-        this.producers.clear();
-        this.producers.addAll(producers);
-    }
-
     public List<StudioEntity> getStudios() {
         return Collections.unmodifiableList(studios);
     }
@@ -87,6 +80,13 @@ public class MovieEntity {
     public void setStudios(List<StudioEntity> studios) {
         this.studios.clear();
         this.studios.addAll(studios);
+    }
+
+    public List<ProducerEntity> getProducers() { return Collections.unmodifiableList(producers); }
+
+    public void setProducers(List<ProducerEntity> producers) {
+        this.producers.clear();
+        this.producers.addAll(producers);
     }
 
     public Boolean getWinner() {
@@ -102,12 +102,12 @@ public class MovieEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MovieEntity that = (MovieEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(year, that.year) && Objects.equals(title, that.title) && Objects.equals(producers, that.producers) && Objects.equals(studios, that.studios) && Objects.equals(winner, that.winner);
+        return Objects.equals(id, that.id) && Objects.equals(year, that.year) && Objects.equals(title, that.title) && Objects.equals(studios, that.studios) && Objects.equals(producers, that.producers) && Objects.equals(winner, that.winner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, year, title, producers, studios, winner);
+        return Objects.hash(id, year, title, studios, producers, winner);
     }
 
     @PrePersist
