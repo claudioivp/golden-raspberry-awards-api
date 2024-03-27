@@ -111,7 +111,7 @@ public class StudioControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(studioRequestToSave)))
                 .andExpect(status().isBadRequest()) // Then
-                .andExpect(jsonPath("$.errors.message").value("Falha na integridade dos dados")); // Then
+                .andExpect(jsonPath("$.errors.message").value("Falha na integridade dos dados. Já existe um registro com os mesmos dados fornecidos.")); // Then
     }
 
     @Test
