@@ -49,7 +49,13 @@ public class ErrorHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ModelMap> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         var errorsMap = new ModelMap();
-        errorsMap.addAttribute("errors", Map.of("message", "Falha na integridade dos dados"));
+
+        String customMessage = String.format(
+                "Falha na integridade dos dados.%s",
+                ex.getMessage().contains("Unique index or primary key violation") ? " Já existe um registro com os mesmos dados fornecidos." : ""
+        );
+
+        errorsMap.addAttribute("errors", Map.of("message", customMessage));
         return ResponseEntity.badRequest().body(errorsMap);
     }
 
