@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -44,10 +45,11 @@ class ProcessCSVFileUseCaseTest {
     }
 
     @BeforeEach
-    void setUp() throws URISyntaxException {
+    void setUp() throws URISyntaxException, IOException {
         // Given Path
         filePath = Paths.get(
-                ClassLoader.getSystemResource("movielist-test.csv").toURI());
+                new ClassPathResource("movielist-test.csv").getURI()
+        );
 
         // Given CSVFileReaderConfig
         configuration =  CSVFileReaderConfig.valueOf(

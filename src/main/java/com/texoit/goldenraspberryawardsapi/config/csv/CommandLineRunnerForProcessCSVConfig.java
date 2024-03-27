@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -36,7 +36,8 @@ public class CommandLineRunnerForProcessCSVConfig implements CommandLineRunner {
 
         try {
             Path filePath = Paths.get(
-                    ClassLoader.getSystemResource("movielist.csv").toURI());
+                    new ClassPathResource("movielist.csv").getURI()
+            );
 
             CSVFileReaderConfig configuration =  CSVFileReaderConfig.valueOf(
                     ';',
@@ -46,7 +47,7 @@ public class CommandLineRunnerForProcessCSVConfig implements CommandLineRunner {
             processCSVFileInputPort.start(filePath, configuration);
 
             logger.info("CSV file processing completed successfully.");
-        } catch (URISyntaxException | IOException | InvalidDomainException e) {
+        } catch (IOException | InvalidDomainException e) {
             logger.info("CSV file processing found an error: " + e.getMessage().replace("\n", ""));
             logger.info("CSV file processing was not completed successfully.");
         }
