@@ -73,11 +73,13 @@ class ProcessCSVFileUseCaseTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testRealCsvFileProcessing() throws IOException, InvalidDomainException, URISyntaxException {
         // Given
-        int EXPECTED_STUDIOS = 6;
-        int EXPECTED_PRODUCERS = 16;
-        int EXPECTED_MOVIES = 8;
-        int EXPECTED_MIN_INTERVAL = 2;
+        int EXPECTED_STUDIOS = 59;
+        int EXPECTED_PRODUCERS = 360;
+        int EXPECTED_MOVIES = 206;
+        int EXPECTED_MIN_INTERVAL = 1;
+        int EXPECTED_MIN_INTERVAL_YEARS = 1;
         int EXPECTED_MAX_INTERVAL = 1;
+        int EXPECTED_MAX_INTERVAL_YEARS = 13;
 
         // When
         processCSVFileInputPort.start(filePath, configuration);
@@ -89,7 +91,9 @@ class ProcessCSVFileUseCaseTest {
         List<ProducerIntervalsProjection> minIntervals = producerRepository.findMinIntervals();
         List<ProducerIntervalsProjection> maxIntervals = producerRepository.findMaxIntervals();
         assertEquals(EXPECTED_MIN_INTERVAL, minIntervals.size());
+        assertEquals(EXPECTED_MIN_INTERVAL_YEARS, minIntervals.get(0).getYearInterval());
         assertEquals(EXPECTED_MAX_INTERVAL, maxIntervals.size());
+        assertEquals(EXPECTED_MAX_INTERVAL_YEARS, maxIntervals.get(0).getYearInterval());
     }
 
     @Test
