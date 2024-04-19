@@ -34,7 +34,23 @@ mvn spring-boot:run
 
 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
-5. Os testes de integração estão implementados para garantir a correta funcionalidade da API. Eles podem ser executados utilizando Maven:
+5. Testes de Integração
+- Os testes de integração estão implementados para garantir a correta funcionalidade da API.
+- O arquivo CSV de testes está localizado em **`src/test/resources/movielist-test.csv`**.
+- Os principais parâmetros de assertivas para testes com registros adicionados podem ser definidos na classe **`src/test/java/com/texoit/goldenraspberryawardsapi/application/core/usecase/csv/ProcessCSVFileUseCaseTest.java`**:
+
+```java
+   // Given
+   int EXPECTED_STUDIOS = 62;
+   int EXPECTED_PRODUCERS = 360;
+   int EXPECTED_MOVIES = 209;
+   int EXPECTED_MIN_INTERVAL = 2;
+   int EXPECTED_MIN_INTERVAL_YEARS = 1;
+   int EXPECTED_MAX_INTERVAL = 1;
+   int EXPECTED_MAX_INTERVAL_YEARS = 57;
+```
+
+- Para executar os testes de integração, utilize Maven:
 
 ```bash
 mvn test
