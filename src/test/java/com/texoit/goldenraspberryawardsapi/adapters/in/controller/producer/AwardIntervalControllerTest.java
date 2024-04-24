@@ -144,7 +144,7 @@ public class AwardIntervalControllerTest {
         Arrays.asList(stevenSpielberg, joelSilver, matthewVaughn).forEach(producerRepository::saveAndFlush);
         Arrays.asList(summertimeSadness, aliceInWonderland, theFastAndTheFurious, theBlueLagoon).forEach(movieRepository::saveAndFlush);
         int minIntervalExpectedInYears = theFastAndTheFurious.getYear() - aliceInWonderland.getYear();
-        int maxIntervalExpectedInYears = theBlueLagoon.getYear() - summertimeSadness.getYear();
+        int maxIntervalExpectedInYears = theFastAndTheFurious.getYear() - summertimeSadness.getYear();
 
         // When
         mockMvc.perform(get("/api/v1/awardintervals")
@@ -169,7 +169,7 @@ public class AwardIntervalControllerTest {
                                         joelSilver.getName(),
                                         maxIntervalExpectedInYears,
                                         summertimeSadness.getYear(),
-                                        theBlueLagoon.getYear()
+                                        theFastAndTheFurious.getYear()
                                 )
                         ).exists()
                 );

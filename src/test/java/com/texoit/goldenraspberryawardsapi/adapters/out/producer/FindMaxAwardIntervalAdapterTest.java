@@ -111,7 +111,7 @@ class FindMaxAwardIntervalAdapterTest {
     }
 
     @Test
-    @DisplayName("FindMinAwardIntervalAdapter, InsertStudioAdapter, InsertProducerAdapter e InsertMovieAdapter não devem ser nulos")
+    @DisplayName("FindMaxAwardIntervalAdapter, InsertStudioAdapter, InsertProducerAdapter e InsertMovieAdapter não devem ser nulos")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void adapterLoads() {
         assertNotNull(findMaxAwardIntervalAdapter);
@@ -121,9 +121,9 @@ class FindMaxAwardIntervalAdapterTest {
     }
 
     @Test
-    @DisplayName("FindMaxAwardIntervalAdapter deve pesquisar o maior intervalo entre dois prêmios de um produtor")
+    @DisplayName("FindMaxAwardIntervalAdapter deve pesquisar o maior intervalo entre as vitórias consecutivas de um mesmo produtor")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testFindMinAwardInterval() {
+    public void testFindMaxAwardInterval() {
         // When
         Arrays.asList(associatedFilmDistribution, universalStudios, newLine).forEach(insertStudioAdapter::insert);
         Arrays.asList(stevenSpielberg, joelSilver, matthewVaughn).forEach(insertProducerAdapter::insert);
@@ -135,9 +135,9 @@ class FindMaxAwardIntervalAdapterTest {
         assertEquals(1, maxAwardIntervals.size());
         var savedAwardInterval = maxAwardIntervals.iterator().next();
         assertEquals(joelSilver.getName(), savedAwardInterval.getProducer());
-        int minIntervalExpectedInYears = theBlueLagoon.getYear() - summertimeSadness.getYear();
-        assertEquals(minIntervalExpectedInYears, savedAwardInterval.getYearInterval());
+        int maxIntervalExpectedInYears = theFastAndTheFurious.getYear() - summertimeSadness.getYear();
+        assertEquals(maxIntervalExpectedInYears, savedAwardInterval.getYearInterval());
         assertEquals(summertimeSadness.getYear(), savedAwardInterval.getPreviousWin());
-        assertEquals(theBlueLagoon.getYear(), savedAwardInterval.getFollowingWin());
+        assertEquals(theFastAndTheFurious.getYear(), savedAwardInterval.getFollowingWin());
     }
 }
