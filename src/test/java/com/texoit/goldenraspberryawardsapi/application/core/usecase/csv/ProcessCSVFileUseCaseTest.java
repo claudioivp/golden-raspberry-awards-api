@@ -12,7 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -48,7 +47,7 @@ class ProcessCSVFileUseCaseTest {
     void setUp() throws URISyntaxException, IOException {
         // Given Path
         filePath = Paths.get(
-                new ClassPathResource("movielist-test.csv").getURI()
+                "src/main/resources/movielist.csv"
         );
 
         // Given CSVFileReaderConfig
