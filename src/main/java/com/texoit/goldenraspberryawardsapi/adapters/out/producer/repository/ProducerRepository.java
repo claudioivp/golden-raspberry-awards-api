@@ -62,26 +62,20 @@ public interface ProducerRepository extends JpaRepository<ProducerEntity, UUID> 
             value = """
                     WITH ProducerIntervals AS (
                     	SELECT
-                    	    P.NAME AS PRODUCER,
-                    	    (OM.PRODUCTIONYEAR - M.PRODUCTIONYEAR) AS YEARINTERVAL,
-                    	    M.PRODUCTIONYEAR AS PREVIOUSWIN,
-                    	    OM.PRODUCTIONYEAR AS FOLLOWINGWIN
+                            P.NAME AS PRODUCER,
+                            (M.PRODUCTIONYEAR - LAG(M.PRODUCTIONYEAR) OVER (PARTITION BY P.NAME ORDER BY M.PRODUCTIONYEAR)) AS YEARINTERVAL,
+                            LAG(M.PRODUCTIONYEAR) OVER (PARTITION BY P.NAME ORDER BY M.PRODUCTIONYEAR) AS PREVIOUSWIN,
+                            M.PRODUCTIONYEAR AS FOLLOWINGWIN
                     	FROM
                     	    PRODUCER P
                     	JOIN
                     	    MOVIE_PRODUCER MP1 ON P.ID = MP1.PRODUCER_ID
                     	JOIN
                     	    MOVIE M ON MP1.MOVIE_ID = M.ID
-                    	JOIN
-                    	    MOVIE_PRODUCER MP2 ON P.ID = MP2.PRODUCER_ID
-                    	JOIN
-                    	    MOVIE OM ON MP2.MOVIE_ID = OM.ID
                     	WHERE
                     	    M.WINNER = TRUE
-                    	    AND OM.WINNER = TRUE
-                    	    AND OM.PRODUCTIONYEAR > M.PRODUCTIONYEAR
                     	ORDER BY
-                    	    YEARINTERVAL ASC
+                    	    PRODUCER, M.PRODUCTIONYEAR
                     )
                     SELECT
                         PRODUCER,
